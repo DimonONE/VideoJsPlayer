@@ -1,0 +1,24 @@
+<head>
+  <link href="https://vjs.zencdn.net/8.3.0/video-js.css" rel="stylesheet" />
+  <link href="css/style.css" rel="stylesheet" />
+</head>
+
+<body>
+  <div id="wrapper">
+    <a id="video-close-button" href=""></a>
+    <!-- <div id="time-slots">
+      <div class="time-slot" style="top: 20px; left: 10%;">00:10</div>
+      <div class="time-slot" style="top: 50%; left: 40%;">00:30</div>
+      <div class="time-slot" style="top: 80%; left: 70%;">00:50</div>
+    </div> -->
+    <video id="video-player" class="video-js vjs-tech" controls preload="auto" poster="msg-1741619125-235171.jpg">
+      <source src="ted.lasso.s01e01.1080p.web.h264-oath_1597395314_1080p.mp4" type="video/mp4" />
+      <track kind="captions" src="http://localhost:3000/ted.lasso.s01e01.1080p.web.h264-oath_1597395314_1080p.vtt"
+        srclang="en" label="English" default>
+    </video>
+    <div id="subtitle-tooltip"></div>
+  </div>
+
+  <script src="https://vjs.zencdn.net/8.3.0/video.min.js"></script>
+  <script src="js/script.js"></script>
+</body>
