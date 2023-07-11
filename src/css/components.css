@@ -1,0 +1,78 @@
+/* Text translate */
+
+.vjs-text-track-display {
+  height: 7em;
+  top: auto;
+  bottom: 6em;
+  pointer-events: auto;
+}
+
+.vjs-text-track-display>div {
+  margin: 0 !important;
+}
+
+.video-js .vjs-text-track-display .vjs-text-track-cue {
+  top: auto !important;
+  bottom: 0 !important;
+  height: max-content !important;
+  padding: 10px 0;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  font-size: 2em !important;
+}
+
+.video-js .vjs-text-track-display .vjs-text-track-cue div {
+  color: #fc6 !important;
+  font-size: 1.4em;
+}
+
+.video-js .vjs-text-track-display .vjs-text-track-cue .word-container {
+  position: relative;
+  z-index: 3;
+}
+
+.video-js .vjs-text-track-display .word-container .tooltip {
+  display: none;
+  position: absolute;
+  width: 20em;
+  font-size: 0.70em;
+  bottom: 100%;
+  left: calc(50% - 10em);
+  padding: 1em;
+  text-align: left;
+  box-sizing: border-box;
+  background: #222121;
+  border-radius: 4px;
+  color: white;
+}
+
+.video-js .vjs-text-track-display .word-container.active .tooltip {
+  display: block !important;
+}
+
+.word:hover {
+  background-color: rgba(96, 132, 185, 0.83);
+}
+
+.video-js .vjs-text-track-cue .tooltip .translated_text {
+  margin: 0 0 1em 0;
+  font-size: 1.35em;
+  opacity: 0.7;
+  max-width: 75%;
+}
+
+.video-js .vjs-text-track-cue .tooltip .translation,
+.video-js .vjs-text-track-cue .loading .translation,
+.video-js .vjs-text-track-cue .error .translation {
+  color: #FDC666;
+  font-weight: bold;
+}
+
+.video-js .vjs-text-track-cue .tooltip .translation_dictionary_image {
+  cursor: pointer;
+  font-size: 0.7em;
+  margin-left: 15px;
+  float: right;
+  width: 2em;
+  height: 2em;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}

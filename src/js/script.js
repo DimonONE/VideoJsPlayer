@@ -1,3 +1,8 @@
+const { default: videojs } = require("video.js");
+const { wordContainer } = require("./components");
+const { translateWorld } = require("./functions");
+const { resizeEventListener } = require("./helpers");
+
 const videoPlayer = videojs('video-player', {
     playbackRates: [0.50, 0.60, 0.70, 0.80, 0.90, 1.00, 1.25, 1.50, 2.00]
 });
@@ -86,8 +91,6 @@ qualityButtonWrapper.appendChild(qualityButton);
 
 
 // Custom translate visuals
-const tracks = videoPlayer.textTracks();
-const tooltipElement = document.getElementById('subtitle-tooltip');
 videoPlayer.on('timeupdate', function() {
   const textTrackElement = document.getElementsByClassName('vjs-text-track-display');
   if (textTrackElement.length) {
@@ -108,7 +111,8 @@ videoPlayer.on('timeupdate', function() {
           if (hasPunctuation) {
             return `${trimmedWord} `;
           } else {
-            return ` <span class="word-container"><span class="word">${trimmedWord}</span><span class="tooltip" style="display: none;">${trimmedWord}</span></span>`;
+
+            return wordContainer({trimmedWord});
           }
         });
 
@@ -118,21 +122,43 @@ videoPlayer.on('timeupdate', function() {
   }
 });
 
+
 // Hover effect in word
+let wordIdHash
 videoPlayer.on('timeupdate', function() {
   const wordContainerElements = document.getElementsByClassName('word-container');
   if(wordContainerElements.length) {
     for (let i = 0; i < wordContainerElements.length; i++) {
       wordContainerElements[i].addEventListener('mouseenter', function() {
+        const word = wordContainerElements[i].getElementsByClassName('word')[0].innerHTML
+        const isDuplicate = wordIdHash === `${word}-${i}`
         wordContainerElements[i].classList.add('active')
+
+
+        if (!isDuplicate) {
+          translateWorld({wordContainerElements: wordContainerElements[i], word})
+          wordIdHash = `${word}-${i}`
+          
+          // Fix output tooltip beyond the screen
+          const divElement = wordContainerElements[i].getElementsByClassName('tooltip')[0];
+          resizeEventListener({divElement})
+        }
+
       });
 
       wordContainerElements[i].addEventListener('mouseleave', function() {
         wordContainerElements[i].classList.remove('active')
+        wordIdHash = ''
       });
     }
   }
 });
+
+
+
+
+
+
 
 // Help button 
 const helpButton = videoPlayer.controlBar.addChild('button', {
