@@ -1,5 +1,5 @@
 const { default: videojs } = require("video.js");
-const { wordContainer } = require("./components");
+const { wordContainer, qualityButtonComponent } = require("./components");
 const { translateWorld } = require("./functions");
 const { resizeEventListener } = require("./helpers");
 
@@ -49,45 +49,8 @@ document.addEventListener('click', function(event) {
 });
 
 // Create a custom component for the quality switch button
-const controlBar = videoPlayer.controlBar;
-const settingsQuality = [ '720', '420', 'auto']
-
 const qualityButtonWrapper = document.createElement('div');
-qualityButtonWrapper.className = 'vjs-resolution-button-wrapper vjs-menu-button vjs-menu-button-popup vjs-control vjs-button';
-controlBar.el().appendChild(qualityButtonWrapper);
-
-const qualityMenu = document.createElement('div');
-qualityMenu.className ='vjs-menu vjs-hidden'
-
-const qualityMenuUl = document.createElement('ul');
-qualityMenuUl.role='menu'
-qualityMenuUl.className ='vjs-menu-content'
-qualityMenu.appendChild(qualityMenuUl);
-
-for (let i = 0; i < settingsQuality.length; i++) {
-  const qualityMenuLi = document.createElement('li');
-  qualityMenuLi.className ='vjs-menu-item'
-  const qualityItemText = document.createElement('span');
-  qualityItemText.className ='vjs-menu-item-text'
-  qualityItemText.innerHTML = settingsQuality[i]
-  qualityMenuLi.appendChild(qualityItemText);
-  qualityMenuUl.appendChild(qualityMenuLi);
-}
-
-// quality following button
-const qualityButton = document.createElement('button');
-qualityButton.className ='vjs-resolution-button vjs-menu-button vjs-menu-button-popup vjs-button'
-qualityButtonWrapper.appendChild(qualityMenu);
-
-qualityButton.addEventListener('click', function() {
-  const tooltip = qualityButtonWrapper.querySelector('.vjs-menu');
-  const isTooltipHidden = tooltip.classList.contains('vjs-hidden');
-
-  tooltip.classList.add(isTooltipHidden ? 'vjs-lock-showing' : 'vjs-hidden');
-  tooltip.classList.remove(isTooltipHidden ?'vjs-hidden' : 'vjs-lock-showing');
-});
-
-qualityButtonWrapper.appendChild(qualityButton);
+qualityButtonComponent({videoPlayer, qualityButtonWrapper})
 
 
 // Custom translate visuals
@@ -155,9 +118,45 @@ videoPlayer.on('timeupdate', function() {
 });
 
 
+// Subtitles button 
+const selectSubtitlesButton = videoPlayer.controlBar.addChild('button', {
+  className: 'vjs-subtitles-button vjs-menu-button vjs-menu-button-popup vjs-control vjs-button'
+});
+
+const selectSubtitlesTooltip = document.createElement('div');
+selectSubtitlesTooltip.className ='vjs-menu vjs-hidden'
+
+const subtitlesMenu = document.createElement('div');
+subtitlesMenu.role='menu'
+subtitlesMenu.className ='vjs-menu-content'
+
+const fontSizeControl = document.createElement('div');
+fontSizeControl.className = 'font-size-control'
+fontSizeControl.role = 'menuitem'
+fontSizeControl.innerHTML = `
+  <span class="text">Subtitle size:</span>
+  <div class="item js-dec">А-</div>
+  <div class="item js-inc">А+</div>
+`.replace(/\s+/g, ' ')
 
 
 
+
+subtitlesMenu.appendChild(fontSizeControl);
+selectSubtitlesButton.el().appendChild(selectSubtitlesTooltip);
+selectSubtitlesTooltip.appendChild(subtitlesMenu);
+selectSubtitlesButton.el().getElementsByClassName('vjs-control-text')[0].innerHTML = 'tr+3'
+
+
+
+selectSubtitlesButton.on('click', function() {
+  console.log('click');
+
+  const isTooltipHidden = selectSubtitlesTooltip.classList.contains('vjs-hidden');
+
+  selectSubtitlesTooltip.classList.add(isTooltipHidden ? 'vjs-lock-showing' : 'vjs-hidden');
+  selectSubtitlesTooltip.classList.remove(isTooltipHidden ?'vjs-hidden' : 'vjs-lock-showing');
+});
 
 
 // Help button 

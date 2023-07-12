@@ -80,6 +80,8 @@ body {
 }
 
 .video-js .vjs-help-button:before,
+.video-js .vjs-subtitles-button .vjs-icon-placeholder:before,
+.video-js .vjs-subtitles-button .vjs-control-text,
 .video-js .vjs-playback-rate:before,
 .video-js .vjs-resolution-button-wrapper .vjs-menu-button.vjs-menu-button-popup.vjs-button:before,
 .video-js .vjs-play-control .vjs-icon-placeholder:before,
@@ -90,6 +92,8 @@ body {
 }
 
 .video-js .vjs-help-button:hover:before,
+.video-js .vjs-subtitles-button:hover .vjs-icon-placeholder:before,
+.video-js .vjs-subtitles-button:hover .vjs-control-text,
 .video-js .vjs-playback-rate:hover:before,
 .video-js .vjs-resolution-button-wrapper .vjs-menu-button.vjs-menu-button-popup.vjs-button:hover:before,
 .video-js .vjs-play-control .vjs-icon-placeholder:hover:before,
@@ -245,8 +249,12 @@ body {
   order: 8;
 }
 
-.vjs-fullscreen-control {
+.vjs-subtitles-button {
   order: 9;
+}
+
+.vjs-fullscreen-control {
+  order: 10;
 }
 
 .video-js .vjs-help-button::before,
@@ -275,6 +283,11 @@ body {
 
 }
 
+/* Subtitles button */
+
+.video-js .vjs-subtitles-button .vjs-icon-placeholder:before {
+  font-size: 2.5em;
+}
 
 /* Rate button */
 .video-js .vjs-menu-button-popup .vjs-menu-content {

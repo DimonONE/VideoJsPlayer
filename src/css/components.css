@@ -1,5 +1,4 @@
 /* Text translate */
-
 .vjs-text-track-display {
   height: 7em;
   top: auto;
@@ -76,3 +75,86 @@
   height: 2em;
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 }
+
+.video-js .vjs-subtitles-button .vjs-control-text  {
+  padding-left: 2.3em;
+  margin: 0;
+}
+
+.video-js .vjs-subtitles-button >.vjs-control-text{
+  display: flex;
+  align-items: center;
+  line-height: 2.6em;
+  font-size: 1.6em;
+  width: auto;
+  height: 100%;
+  position: relative;
+  -webkit-transition: opacity 0.4s;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.video-js .vjs-subtitles-button {
+  width: 7em;
+}
+
+.video-js .vjs-subtitles-button .vjs-icon-placeholder:before {
+  left: 0%;
+  transform: translate(-25%, -50%);
+}
+
+.video-js .vjs-subtitles-button .font-size-control {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #161515;
+  margin: -2em -2em 1.3em;
+  padding: 1em 2em;
+}
+
+.video-js .vjs-subtitles-button .vjs-menu .vjs-menu-content {
+  padding: 2em;
+}
+
+.video-js .vjs-subtitles-button .font-size-control .text {
+  text-align: left;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+}
+
+.video-js .vjs-subtitles-button .font-size-control .item:nth-of-type(1) {
+  border-radius: 3px 0 0 3px;
+}
+
+.video-js .vjs-subtitles-button .font-size-control .item {
+  display: inline-block;
+  width: 3.5em;
+  height: 2em;
+  padding: 0.5em;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  -webkit-transition: color 0.4s, border-color 0.4s;
+  transition: color 0.4s, border-color 0.4s;
+  vertical-align: middle;
+  position: relative;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: bold;
+}
+
+.video-js .vjs-subtitles-button.vjs-menu-button-popup .vjs-menu {
+  left: auto;
+  right: -4em;
+}
+
+.video-js .vjs-control:focus {
+  text-shadow: none;
+}
+
