@@ -95,6 +95,8 @@ body {
 .video-js .vjs-help-button:hover:before,
 .video-js .vjs-subtitles-button:hover .vjs-icon-placeholder:before,
 .video-js .vjs-subtitles-button:hover .vjs-control-text,
+.video-js .vjs-subtitles-button.active .vjs-icon-placeholder:before,
+.video-js .vjs-subtitles-button.active .vjs-control-text,
 .video-js .vjs-next-button>.vjs-control-text:hover,
 .video-js .vjs-playback-rate:hover:before,
 .video-js .vjs-resolution-button-wrapper .vjs-menu-button.vjs-menu-button-popup.vjs-button:hover:before,
@@ -326,7 +328,7 @@ body {
 }
 
 .video-js .vjs-menu-content .vjs-menu-item.vjs-selected:before {
-  content: url('../source/svg/white-checed.svg');
+  content: url('../source/svg/white-checked.svg');
   left: 1em;
 }
 
@@ -366,7 +368,13 @@ body {
   margin-bottom: 8px;
 }
 
+.video-js .vjs-subtitles-button .vjs-control-text > .vjs-lock-showing {
+background: red;
+}
+
 .vjs-menu.vjs-lock-showing + .vjs-resolution-button,
+.video-js .vjs-subtitles-button.active,
+.video-js .vjs-subtitles-button.active,
 .vjs-menu.vjs-lock-showing + .vjs-menu-button.vjs-menu-button-popup.vjs-button:before,
 .vjs-playback-rate.vjs-menu-button[aria-expanded="true"].vjs-playback-rate:before,
 .vjs-playback-rate.vjs-menu-button[aria-expanded="true"],

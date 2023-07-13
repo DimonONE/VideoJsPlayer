@@ -1,6 +1,6 @@
 const { default: videojs } = require("video.js");
-const { wordContainer, qualityButtonComponent, nextButtonComponent } = require("./components");
-const { translateWorld } = require("./functions");
+const { wordContainer, qualityButtonComponent, nextButtonComponent, subtitlesComponent } = require("./components");
+const { translateWorld, rewindVideo, soundAdjustment } = require("./functions");
 const { resizeEventListener } = require("./helpers");
 
 const videoPlayer = videojs('video-player', {
@@ -15,6 +15,10 @@ videoPlayer.on("userinactive", function() {
 videoPlayer.on("useractive", function() {
   closeButton.style.opacity = '1'
 });
+
+// Video rewind and sound adjustment
+rewindVideo({videoPlayer})
+soundAdjustment({videoPlayer})
 
 // Rounding of speed values to 2 decimal places
 const menuItemText = document.querySelectorAll('.vjs-playback-rate .vjs-menu-item-text')
@@ -121,40 +125,7 @@ videoPlayer.on('timeupdate', function() {
 
 
 // Subtitles button 
-const selectSubtitlesButton = videoPlayer.controlBar.addChild('button', {
-  className: 'vjs-subtitles-button vjs-menu-button vjs-menu-button-popup vjs-control vjs-button'
-});
-
-const selectSubtitlesTooltip = document.createElement('div');
-selectSubtitlesTooltip.className ='vjs-menu vjs-hidden'
-
-const subtitlesMenu = document.createElement('div');
-subtitlesMenu.role='menu'
-subtitlesMenu.className ='vjs-menu-content'
-
-const fontSizeControl = document.createElement('div');
-fontSizeControl.className = 'font-size-control'
-fontSizeControl.role = 'menuitem'
-fontSizeControl.innerHTML = `
-  <span class="text">Subtitle size:</span>
-  <div class="item js-dec">А-</div>
-  <div class="item js-inc">А+</div>
-`.replace(/\s+/g, ' ')
-
-subtitlesMenu.appendChild(fontSizeControl);
-selectSubtitlesButton.el().appendChild(selectSubtitlesTooltip);
-selectSubtitlesTooltip.appendChild(subtitlesMenu);
-selectSubtitlesButton.el().getElementsByClassName('vjs-control-text')[0].innerHTML = 'en'
-
-selectSubtitlesButton.on('click', function() {
-  console.log('click');
-
-  const isTooltipHidden = selectSubtitlesTooltip.classList.contains('vjs-hidden');
-
-  selectSubtitlesTooltip.classList.add(isTooltipHidden ? 'vjs-lock-showing' : 'vjs-hidden');
-  selectSubtitlesTooltip.classList.remove(isTooltipHidden ?'vjs-hidden' : 'vjs-lock-showing');
-});
-
+subtitlesComponent({videoPlayer})
 
 // Help button 
 const helpButton = videoPlayer.controlBar.addChild('button', {

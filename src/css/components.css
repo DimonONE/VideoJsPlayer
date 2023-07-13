@@ -10,7 +10,7 @@
   margin: 0 !important;
 }
 
-.video-js .tooltip .tooltip_content {
+.video-js .vjs-text-track-display .tooltip_content {
   display: none;
 }
 
@@ -86,7 +86,7 @@
   font-size: 0.85em;
 }
 
-.video-js .vjs-text-track-cue .tooltip .translation_dictionary_image {
+.video-js .vjs-text-track-cue .translation_dictionary_image {
   cursor: pointer;
   font-size: 0.7em;
   margin-left: 15px;
@@ -95,6 +95,8 @@
   height: 2em;
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 }
+
+/* Language selection */
 
 .video-js .vjs-subtitles-button .vjs-control-text  {
   padding-left: 2.3em;
@@ -133,16 +135,62 @@
   display: -ms-flexbox;
   display: flex;
   background-color: #161515;
-  margin: -2em -2em 1.3em;
-  padding: 1em 2em;
+  margin: -2.8em -2.8em 1.3em;
+  padding: 1.5em 2.8em;
 }
 
 .video-js .vjs-subtitles-button .vjs-menu .vjs-menu-content {
-  padding: 2em;
+  padding: 2.8em;
+  overflow: hidden;
+}
+
+.video-js .vjs-subtitles-button.vjs-menu-button-popup .vjs-menu {
+  min-width: 25em;
+  left: auto;
+  right: -3.6em;
+}
+
+.video-js .vjs-subtitles-button .vjs-menu-item.main-lang {
+  margin-bottom: 0;
+}
+
+.video-js .vjs-subtitles-button .divider {
+  position: relative;
+  left: -3em;
+  clear: both;
+  width: 100%;
+  width: calc(100% + 6em);
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin-bottom: 1em;
+}
+
+.video-js .vjs-subtitles-button .vjs-menu-content .vjs-menu-item.vjs-selected:before {
+  content: '';
+} 
+
+.vjs-subtitles-button .vjs-menu li.vjs-selected,
+.vjs-subtitles-button .vjs-menu li.vjs-selected:hover,
+.vjs-subtitles-button .vjs-menu li.vjs-selected:focus {
+  color: #ceba7a;
+}
+
+.vjs-subtitles-button .vjs-menu li.vjs-menu-item:hover {
+  background-color: inherit;
+}
+
+.video-js .vjs-subtitles-button .vjs-menu-item.vjs-selected .checkbox-item svg {
+  width: 0.6em;
+  fill: #ceba7a;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .video-js .vjs-subtitles-button .font-size-control .text {
   text-align: left;
+  font-size: 1.4em;
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
@@ -157,9 +205,11 @@
 }
 
 .video-js .vjs-subtitles-button .font-size-control .item {
-  display: inline-block;
-  width: 3.5em;
-  height: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4em;
+  height: auto;
   padding: 0.5em;
   border: 1px solid rgba(255, 255, 255, 0.3);
   cursor: pointer;
@@ -168,16 +218,58 @@
   vertical-align: middle;
   position: relative;
   color: rgba(255, 255, 255, 0.7);
+  font-size: 1.2em;
   font-weight: bold;
 }
 
-.video-js .vjs-subtitles-button.vjs-menu-button-popup .vjs-menu {
-  left: auto;
-  right: -4em;
+.video-js .vjs-subtitles-button .font-size-control .item:hover {
+  border-color: white;
+  color: white;
 }
 
 .video-js .vjs-control:focus {
   text-shadow: none;
+}
+
+.video-js .vjs-subtitles-button .vjs-menu-item {
+  display: flex;
+  text-transform: capitalize;
+  color: white;
+  position: relative;
+  width: 4.9em;
+  float: left;
+  padding: 0 1em 0 2em;
+  margin: 0 1.5em 1.2em 0;
+  text-align: left;
+}
+
+.video-js .vjs-subtitles-button .vjs-menu-item sup {
+  text-align: center;
+  font-size: 0.8em;
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5em;
+  border-radius: 4px;
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.3);
+  width: 1.5em;
+  height: 1.5em;
+}
+
+.video-js .vjs-subtitles-button .vjs-menu-item:nth-of-type(2n) {
+  margin-right: 0;
+}
+
+.video-js .vjs-subtitles-button .vjs-menu-item .checkbox-item {
+  font-size: 1.3em;
+  position: absolute;
+  left: 0;
+  width: 1em;
+  height: 1em;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
 }
 
 /*Button next  */

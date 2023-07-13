@@ -1,5 +1,6 @@
 const speechSoundIcon = require('../source/svg/icon-speech-sound.svg');
 const addToDictionaryIcon = require('../source/svg/add-to-dictionary.svg');
+const whiteCheckedIcon = require("../source/svg/white-checked.svg");
 
 const qualityButtonComponent = ({videoPlayer, qualityButtonWrapper}) => {
   const controlBar = videoPlayer.controlBar;
@@ -65,6 +66,93 @@ const wordContainer = ({trimmedWord}) => {
   return ` <span class="word-container">${content}</span>`
 }
 
+const subtitlesComponent = ({videoPlayer}) => {
+  const selectSubtitlesButton = videoPlayer.controlBar.addChild('button', {
+    className: 'vjs-subtitles-button vjs-menu-button vjs-menu-button-popup vjs-control vjs-button'
+  });
+
+  const selectSubtitlesTooltip = document.createElement('div');
+  selectSubtitlesTooltip.className ='vjs-menu vjs-hidden'
+
+  const subtitlesMenu = document.createElement('ul');
+  subtitlesMenu.role='menu'
+  subtitlesMenu.className ='vjs-menu-content'
+
+  const fontSizeControl = document.createElement('div');
+  fontSizeControl.className = 'font-size-control'
+  fontSizeControl.role = 'menuitem'
+  fontSizeControl.innerHTML = `
+    <span class="text">Subtitle size:</span>
+    <div class="item js-dec">А-</div>
+    <div class="item js-inc">А+</div>
+  `.replace(/\s+/g, ' ')
+
+  subtitlesMenu.appendChild(fontSizeControl);
+  selectSubtitlesButton.el().appendChild(selectSubtitlesTooltip);
+  selectSubtitlesTooltip.appendChild(subtitlesMenu);
+  selectSubtitlesButton.el().getElementsByClassName('vjs-control-text')[0].innerHTML = 'en'
+
+  selectSubtitlesTooltip.addEventListener('click', function(event) {
+    event.stopPropagation();
+  });
+
+  selectSubtitlesButton.on('click', function() {
+    const isTooltipHidden = selectSubtitlesTooltip.classList.contains('vjs-hidden');
+    selectSubtitlesButton.el().classList.toggle('active', isTooltipHidden);
+    selectSubtitlesTooltip.classList.toggle('vjs-lock-showing', isTooltipHidden);
+    selectSubtitlesTooltip.classList.toggle('vjs-hidden', !isTooltipHidden);
+  });
+
+  const languages = [
+    {'3': 'Es'},
+    {'4': 'It'},
+    {'5': 'Pt'},
+    {'6': 'Fr'},
+    {'7': 'De'},
+    {'8': 'Pl'},
+    {'9': 'Tr'},
+    {'0': 'Cs'},
+    {'1': 'En'},
+    {'2': 'Ru'},
+  ]
+  languages.forEach((lng) => {
+    const [key, value] = Object.entries(lng)[0];
+    const menuItem = document.createElement('li');
+    const checkboxItem = document.createElement('span');
+    checkboxItem.className = 'checkbox-item';
+
+    menuItem.classList.add('vjs-menu-item');
+    menuItem.setAttribute('role', 'menuitemradio');
+    menuItem.setAttribute('tabindex', '-1');
+    menuItem.setAttribute('aria-checked', 'false');
+    menuItem.setAttribute('aria-disabled', 'false');
+
+    if (key === '2' || key === '1') {
+      if (key === '1') {
+        const dividerItem = document.createElement('div');
+        dividerItem.className = 'divider';
+        subtitlesMenu.appendChild(dividerItem);
+      }
+
+      menuItem.classList.add('main-lang');
+    }
+
+    menuItem.innerHTML += `
+      <span>${value}</span>
+      <sup>${key}</sup>
+    `.replace(/\s+/g, ' ');
+    subtitlesMenu.appendChild(menuItem);
+
+    menuItem.addEventListener('click', () => {
+      const isChecked = menuItem.classList.toggle('vjs-selected');
+      menuItem.setAttribute('aria-checked', isChecked ? 'true' : 'false');
+      checkboxItem.innerHTML = isChecked ? `${whiteCheckedIcon}` : '';
+    });
+   
+    menuItem.appendChild(checkboxItem);
+  });
+}
+
 const nextButtonComponent = ({videoPlayer}) => {
   const nextButton = videoPlayer.controlBar.addChild('button', {
     className: 'vjs-next-button vjs-control vjs-button',
@@ -73,22 +161,12 @@ const nextButtonComponent = ({videoPlayer}) => {
   });
 
   nextButton.el().getElementsByClassName('vjs-control-text')[0].innerHTML = 'Next'
-
-  
-
-  const content = `<span class="word">${trimmedWord}</span><span class="tooltip" style="display: none;">
-    ${addToDictionary}
-    ${translationDictionary}
-    ${translatedText}
-    ${translation}
-  </span>`.replace(/\s+/g, ' ')
-
-  return ` <span class="word-container">${content}</span>`
 }
 
 
 module.exports = {
   wordContainer,
   qualityButtonComponent,
-  nextButtonComponent
+  nextButtonComponent,
+  subtitlesComponent
 }

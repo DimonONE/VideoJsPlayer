@@ -1,7 +1,6 @@
 const { getTranslateWorld } = require("./utils");
 
 const translateWorld = async ({wordContainerElements, word}) => {
-
   const { wordTranslate, textVersion } = await getTranslateWorld({word, targetLanguage: 'ru'})  
 
   if (wordTranslate) {
@@ -31,6 +30,35 @@ const translateWorld = async ({wordContainerElements, word}) => {
   })
 }
 
+const rewindVideo = async ({videoPlayer}) => {
+  document.addEventListener('keydown', function(event) {
+    const rewindTime = 1; 
+
+    if (event.code === 'ArrowLeft') {
+      event.preventDefault();
+      videoPlayer.currentTime(videoPlayer.currentTime() - rewindTime);
+    } else if (event.code === 'ArrowRight') {
+      event.preventDefault();
+      videoPlayer.currentTime(videoPlayer.currentTime() + rewindTime);
+    }
+  });
+}
+
+const soundAdjustment = async ({videoPlayer}) => {
+  document.addEventListener('keydown', function(event) {
+    console.log('event.key', event.key);
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      videoPlayer.volume(videoPlayer.volume() + 0.1);
+    } else if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      videoPlayer.volume(videoPlayer.volume() - 0.1);
+    }
+  });
+}
+
 module.exports = {
-  translateWorld
+  translateWorld,
+  rewindVideo,
+  soundAdjustment
 }
