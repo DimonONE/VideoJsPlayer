@@ -98,6 +98,7 @@
 
 .video-js .vjs-subtitles-button .vjs-control-text  {
   padding-left: 2.3em;
+  padding-right: 0.3em;
   margin: 0;
 }
 
@@ -117,12 +118,13 @@
 }
 
 .video-js .vjs-subtitles-button {
-  width: 7em;
+  width: auto;
 }
 
 .video-js .vjs-subtitles-button .vjs-icon-placeholder:before {
+  width: 1.3em;
   left: 0%;
-  transform: translate(-25%, -50%);
+  transform: translate(0%, -50%);
 }
 
 .video-js .vjs-subtitles-button .font-size-control {
