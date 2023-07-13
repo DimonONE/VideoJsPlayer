@@ -10,6 +10,10 @@
   margin: 0 !important;
 }
 
+.video-js .tooltip .tooltip_content {
+  display: none;
+}
+
 .video-js .vjs-text-track-display .vjs-text-track-cue {
   top: auto !important;
   bottom: 0 !important;
@@ -19,7 +23,7 @@
   font-size: 2em !important;
 }
 
-.video-js .vjs-text-track-display .vjs-text-track-cue div {
+.video-js .vjs-text-track-display .vjs-text-track-cue > div {
   color: #fc6 !important;
   font-size: 1.4em;
 }
@@ -59,11 +63,27 @@
   max-width: 75%;
 }
 
-.video-js .vjs-text-track-cue .tooltip .translation,
-.video-js .vjs-text-track-cue .loading .translation,
-.video-js .vjs-text-track-cue .error .translation {
+.video-js .vjs-text-track-cue .tooltip .translation {
   color: #FDC666;
   font-weight: bold;
+}
+
+.video-js .vjs-text-track-display .tooltip .translation_version span.text_version {
+  font-size: 1.1em;
+  color: #7e7d7d;
+}
+
+.video-js .vjs-text-track-display .tooltip .translation_version span.part_of_speech{
+  color: #626162;
+  font-size: 0.9em;
+  float: right;
+  margin-left: 0.5em;
+}
+
+.video-js .vjs-text-track-display .tooltip .translation_version {
+  margin-top: 1.5em;
+  position: relative;
+  font-size: 0.85em;
 }
 
 .video-js .vjs-text-track-cue .tooltip .translation_dictionary_image {
@@ -85,7 +105,7 @@
   display: flex;
   align-items: center;
   line-height: 2.6em;
-  font-size: 1.6em;
+  font-size: 1.68em;
   width: auto;
   height: 100%;
   position: relative;
@@ -158,3 +178,21 @@
   text-shadow: none;
 }
 
+/*Button next  */
+
+.video-js .vjs-next-button {
+  margin-left: auto;
+}
+
+.video-js .vjs-next-button>.vjs-control-text {
+  line-height: 2.6em;
+  font-size: 1.68em;
+  width: auto;
+  height: 100%;
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

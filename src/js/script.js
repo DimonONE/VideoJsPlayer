@@ -1,5 +1,5 @@
 const { default: videojs } = require("video.js");
-const { wordContainer, qualityButtonComponent } = require("./components");
+const { wordContainer, qualityButtonComponent, nextButtonComponent } = require("./components");
 const { translateWorld } = require("./functions");
 const { resizeEventListener } = require("./helpers");
 
@@ -95,12 +95,14 @@ videoPlayer.on('timeupdate', function() {
       wordContainerElements[i].addEventListener('mouseenter', function() {
         const word = wordContainerElements[i].getElementsByClassName('word')[0].innerHTML
         const isDuplicate = wordIdHash === `${word}-${i}`
+        const isAlreadyTranslated = wordContainerElements[i].getElementsByClassName('translation')[0].innerHTML
         wordContainerElements[i].classList.add('active')
 
-
-        if (!isDuplicate) {
-          translateWorld({wordContainerElements: wordContainerElements[i], word})
-          wordIdHash = `${word}-${i}`
+        if (!isDuplicate ) {
+          if (!isAlreadyTranslated) {
+            translateWorld({wordContainerElements: wordContainerElements[i], word})
+            wordIdHash = `${word}-${i}`
+          }
           
           // Fix output tooltip beyond the screen
           const divElement = wordContainerElements[i].getElementsByClassName('tooltip')[0];
@@ -139,15 +141,10 @@ fontSizeControl.innerHTML = `
   <div class="item js-inc">А+</div>
 `.replace(/\s+/g, ' ')
 
-
-
-
 subtitlesMenu.appendChild(fontSizeControl);
 selectSubtitlesButton.el().appendChild(selectSubtitlesTooltip);
 selectSubtitlesTooltip.appendChild(subtitlesMenu);
-selectSubtitlesButton.el().getElementsByClassName('vjs-control-text')[0].innerHTML = 'tr+3'
-
-
+selectSubtitlesButton.el().getElementsByClassName('vjs-control-text')[0].innerHTML = 'en'
 
 selectSubtitlesButton.on('click', function() {
   console.log('click');
@@ -163,3 +160,14 @@ selectSubtitlesButton.on('click', function() {
 const helpButton = videoPlayer.controlBar.addChild('button', {
   className: 'vjs-help-button'
 });
+
+
+function nextButton() {
+  nextButtonComponent({videoPlayer})
+}
+
+nextButton()
+
+module.exports = {
+  nextButton
+}

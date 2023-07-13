@@ -43,19 +43,38 @@ const qualityButtonComponent = ({videoPlayer, qualityButtonWrapper}) => {
 }
 
 const wordContainer = ({trimmedWord}) => {
-
   const translatedText = `<p class="translated_text"><span>${trimmedWord}</span></p>`;
-
   const translation = `<span class="translation"></span>`;
-  
   const translationDictionary = `<div class="translation_dictionary translation_dictionary_image added" title="In dictionary">
       ${speechSoundIcon}
       <audio class="translation-audio" preload="none" src="https://ororo.tv/api/frontend/text_to_speech?locale=en&amp;message=${trimmedWord}"></audio>
     </div>`;
-
   const addToDictionary = `<button class="translation_dictionary_image">
       ${addToDictionaryIcon}
     </button>`;
+  const content = `<span class="word">${trimmedWord}</span><span class="tooltip" style="display: none;">
+    <span class="tooltip_loading">Loading translation...</span>
+    <div class="tooltip_content">
+      ${addToDictionary}
+      ${translationDictionary}
+      ${translatedText}
+      ${translation}
+    </div>
+  </span>`.replace(/\s+/g, ' ')
+
+  return ` <span class="word-container">${content}</span>`
+}
+
+const nextButtonComponent = ({videoPlayer}) => {
+  const nextButton = videoPlayer.controlBar.addChild('button', {
+    className: 'vjs-next-button vjs-control vjs-button',
+    type: "button",
+    title:"Next"
+  });
+
+  nextButton.el().getElementsByClassName('vjs-control-text')[0].innerHTML = 'Next'
+
+  
 
   const content = `<span class="word">${trimmedWord}</span><span class="tooltip" style="display: none;">
     ${addToDictionary}
@@ -70,5 +89,6 @@ const wordContainer = ({trimmedWord}) => {
 
 module.exports = {
   wordContainer,
-  qualityButtonComponent
+  qualityButtonComponent,
+  nextButtonComponent
 }
