@@ -188,14 +188,13 @@ const subtitlesComponent = ({videoPlayer}) => {
 
   const controlSubtitlesTextChecked = localStorage.getItem('subtitles-control-text-checked')
   Array.from(subtitlesMenu.getElementsByClassName('vjs-menu-item')).forEach((menuItem) => {
-  
-    const isChecked = controlSubtitlesTextChecked.includes(menuItem.querySelector('.lng')?.innerHTML.toLowerCase())
+    const value = menuItem.querySelector('.lng')?.innerHTML.toLowerCase()
+    const isChecked = controlSubtitlesTextChecked.includes(value)
     const checkboxItemElement = menuItem.getElementsByClassName('checkbox-item')[0]
 
     if (isChecked && checkboxItemElement) {
-      console.log('menuItem', menuItem.querySelector('.lng')?.innerHTML.toLowerCase());
-      console.log('controlSubtitlesTextChecked', controlSubtitlesTextChecked);
       checkedItem(menuItem, checkboxItemElement)
+      toggleSubtitle({videoPlayer, language: value})
     }
   });
 }

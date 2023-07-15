@@ -168,7 +168,7 @@ body {
   position: absolute;
   pointer-events: none;
   z-index: 2;
-  top: -1.6em;
+  top: -1.5em;
   height: 1.5em;
   align-items: center;
 }
@@ -199,7 +199,7 @@ body {
   display: block ;
   height: 1.54em;
   left: 0;
-  top: -1.6em;
+  top: -1.5em;
   -webkit-transition: height 0.4s, top 0.4s;
   transition: height 0.4s, top 0.4s;
 }

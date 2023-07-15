@@ -57,47 +57,72 @@ const soundAdjustment = async ({videoPlayer}) => {
   });
 }
 
-const addSubtitles = async ({videoPlayer, srclang, label}) => {
-  const track = {
-    src: trackUrl,
-    kind: captions,
-    srclang,
-    label
+let resizeLocalState = null
+const resizeSubtitle = ({ videoPlayer, defaultSize = 1.3}) => {
+  const subtitleSizeStore = localStorage.getItem('subtitle-size')
+  resizeLocalState = Number(subtitleSizeStore)
+
+  const updateFontSize = (delta, reload) => {
+    const subtitle = document.querySelector('.video-js .vjs-text-track-display .vjs-text-track-cue > div');
+    if (subtitle) {
+      const currentFontSize = parseFloat(subtitle.style.fontSize) || (resizeLocalState || defaultSize);
+      const newFontSize = currentFontSize + delta;
+      subtitle.style.fontSize = `${newFontSize}em`;
+      resizeLocalState = newFontSize
+
+      if (reload) {
+        localStorage.setItem('subtitle-size', +newFontSize)
+      }
+    }
   };
 
-  videoPlayer.addRemoteTextTrack(track, true);
-}
-
-const resizeSubtitle  = async ({videoPlayer}) => {
   const subtitleDec = videoPlayer.el().querySelector('.font-size-control .js-dec');
   const subtitleInc = videoPlayer.el().querySelector('.font-size-control .js-inc');
 
   subtitleDec.addEventListener('click', () => {
-    const subtitle = document.querySelector('.video-js .vjs-text-track-display .vjs-text-track-cue > div');
-    if (subtitle) {
-      const currentFontSize = subtitle.style.fontSize || '1.3em';
-      const newFontSize = Number(currentFontSize.slice(0, -2)) - 0.1; 
-      subtitle.style.fontSize = `${newFontSize}em`
-    }
-  })
+    updateFontSize(-0.1, true);
+  });
 
   subtitleInc.addEventListener('click', () => {
-    const subtitle = document.querySelector('.video-js .vjs-text-track-display .vjs-text-track-cue > div');
-    if (subtitle) {
-      const currentFontSize = subtitle.style.fontSize || '1.3em';
-      const newFontSize = Number(currentFontSize.slice(0, -2)) + 0.1; 
-      subtitle.style.fontSize = `${newFontSize}em`
-    }
-  })
+    updateFontSize(0.1, true);
+  });
+
+  videoPlayer.on('texttrackchange', () => {
+    updateFontSize(0); 
+  });
+};
+
+const addSubtitles = ({videoPlayer, src, srclang, label}) => {
+  videoPlayer.addRemoteTextTrack({
+    kind: 'subtitles',
+    src: src,
+    srclang,
+    label,
+  });
 }
 
-const toggleSubtitle  = async ({videoPlayer, language}) => {
-  const textTracks = videoPlayer.textTracks();
+const toggleSubtitle = async ({videoPlayer, language}) => {
+  await addSubtitles({
+    videoPlayer,
+    src: 'http://localhost:3000/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p-2.vtt',
+    srclang: 'ru',
+    label: 'ru'
+  })
+  await addSubtitles({
+    videoPlayer,
+    src: 'http://localhost:3000/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p.vtt',
+    srclang: 'en',
+    label: 'en'
+  })
 
+  const textTracks = videoPlayer.textTracks();
+  console.log('textTracks', textTracks);
   for (let i = 0; i < textTracks.length; i++) {
     const track = textTracks[i];
-    // console.log('track.kind', track.kind);
-    // console.log('track.label', track.label);
+    console.log('track.kind', track.kind);
+    console.log('track.label', track.label);
+    console.log('track.srclang', track.srclang);
+    console.log('track.language', track.language);
    
     if (track.label === language) {
       console.log('track.mode', track.mode);
