@@ -1,6 +1,5 @@
 const speechSoundIcon = require('../source/svg/icon-speech-sound.svg');
 const addToDictionaryIcon = require('../source/svg/add-to-dictionary.svg');
-const whiteCheckedIcon = require("../source/svg/white-checked.svg");
 const nextPlayIcon = require("../source/svg/icon-next-play.svg");
 const { toggleSubtitle, resizeSubtitle, checkedItem } = require('./functions');
 
@@ -183,18 +182,21 @@ const subtitlesComponent = ({videoPlayer}) => {
 
       toggleSubtitle({videoPlayer, language: value.toLowerCase()})
     });
+
     menuItem.appendChild(checkboxItem);
+  });
 
-    const controlSubtitlesTextChecked = localStorage.getItem('subtitles-control-text-checked')
-    Array.from(subtitlesMenu.getElementsByClassName('vjs-menu-item')).forEach((menuItem) => {
-      const isChecked = controlSubtitlesTextChecked.includes(menuItem.querySelector('.lng')?.innerHTML.toLowerCase())
-      const checkboxItemElement = menuItem.getElementsByClassName('checkbox-item')[0]
+  const controlSubtitlesTextChecked = localStorage.getItem('subtitles-control-text-checked')
+  Array.from(subtitlesMenu.getElementsByClassName('vjs-menu-item')).forEach((menuItem) => {
+  
+    const isChecked = controlSubtitlesTextChecked.includes(menuItem.querySelector('.lng')?.innerHTML.toLowerCase())
+    const checkboxItemElement = menuItem.getElementsByClassName('checkbox-item')[0]
 
-      if (isChecked && checkboxItemElement) {
-        checkedItem(menuItem, checkboxItemElement)
-      }
-    });
-
+    if (isChecked && checkboxItemElement) {
+      console.log('menuItem', menuItem.querySelector('.lng')?.innerHTML.toLowerCase());
+      console.log('controlSubtitlesTextChecked', controlSubtitlesTextChecked);
+      checkedItem(menuItem, checkboxItemElement)
+    }
   });
 }
 

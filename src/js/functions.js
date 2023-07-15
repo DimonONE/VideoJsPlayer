@@ -1,4 +1,5 @@
 const { getTranslateWorld } = require("./utils");
+const whiteCheckedIcon = require("../source/svg/white-checked.svg");
 
 const translateWorld = async ({wordContainerElements, word}) => {
   const { wordTranslate, textVersion } = await getTranslateWorld({word, targetLanguage: 'ru'})  
