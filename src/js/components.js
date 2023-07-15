@@ -1,6 +1,8 @@
 const speechSoundIcon = require('../source/svg/icon-speech-sound.svg');
 const addToDictionaryIcon = require('../source/svg/add-to-dictionary.svg');
 const whiteCheckedIcon = require("../source/svg/white-checked.svg");
+const nextPlayIcon = require("../source/svg/icon-next-play.svg");
+const { toggleSubtitle, resizeSubtitle, checkedItem } = require('./functions');
 
 const qualityButtonComponent = ({videoPlayer, qualityButtonWrapper}) => {
   const controlBar = videoPlayer.controlBar;
@@ -71,12 +73,17 @@ const subtitlesComponent = ({videoPlayer}) => {
     className: 'vjs-subtitles-button vjs-menu-button vjs-menu-button-popup vjs-control vjs-button'
   });
 
+  const controlText = selectSubtitlesButton.el().getElementsByClassName('vjs-control-text')[0]
+  const controlSubtitlesText = localStorage.getItem('subtitles-control-text')
+  controlText.innerHTML = controlSubtitlesText ? controlSubtitlesText : 'OFF'  
+
   const selectSubtitlesTooltip = document.createElement('div');
   selectSubtitlesTooltip.className ='vjs-menu vjs-hidden'
 
   const subtitlesMenu = document.createElement('ul');
   subtitlesMenu.role='menu'
   subtitlesMenu.className ='vjs-menu-content'
+  
 
   const fontSizeControl = document.createElement('div');
   fontSizeControl.className = 'font-size-control'
@@ -86,11 +93,11 @@ const subtitlesComponent = ({videoPlayer}) => {
     <div class="item js-dec">А-</div>
     <div class="item js-inc">А+</div>
   `.replace(/\s+/g, ' ')
-
+  
   subtitlesMenu.appendChild(fontSizeControl);
   selectSubtitlesButton.el().appendChild(selectSubtitlesTooltip);
   selectSubtitlesTooltip.appendChild(subtitlesMenu);
-  selectSubtitlesButton.el().getElementsByClassName('vjs-control-text')[0].innerHTML = 'en'
+  resizeSubtitle({videoPlayer})
 
   selectSubtitlesTooltip.addEventListener('click', function(event) {
     event.stopPropagation();
@@ -115,6 +122,7 @@ const subtitlesComponent = ({videoPlayer}) => {
     {'1': 'En'},
     {'2': 'Ru'},
   ]
+
   languages.forEach((lng) => {
     const [key, value] = Object.entries(lng)[0];
     const menuItem = document.createElement('li');
@@ -138,29 +146,73 @@ const subtitlesComponent = ({videoPlayer}) => {
     }
 
     menuItem.innerHTML += `
-      <span>${value}</span>
+      <span class="lng">${value}</span>
       <sup>${key}</sup>
     `.replace(/\s+/g, ' ');
     subtitlesMenu.appendChild(menuItem);
 
     menuItem.addEventListener('click', () => {
-      const isChecked = menuItem.classList.toggle('vjs-selected');
-      menuItem.setAttribute('aria-checked', isChecked ? 'true' : 'false');
-      checkboxItem.innerHTML = isChecked ? `${whiteCheckedIcon}` : '';
+      checkedItem(menuItem, checkboxItem)
+
+      const selectedItem = Array.from(subtitlesMenu.getElementsByClassName('vjs-menu-item')).map((item) => ({
+        name: item.querySelector('.lng').innerHTML?.toLowerCase(),
+        isChecked: item.getAttribute('aria-checked') === 'true' 
+      }));
+
+      const selectedItemLength = selectedItem.filter(item => item.isChecked).length
+      const subtitlesCheckedText = selectedItem.filter(item => item.isChecked).map(item => item.name).join('+')
+      const isChecked = menuItem.classList.contains('vjs-selected');
+      let controlTextChecked = ''
+
+      if (selectedItemLength) {
+        if (selectedItemLength > 2) {
+          controlTextChecked = `${isChecked 
+              ? value 
+              : selectedItem.filter(item => item.isChecked && item.name !== value)[0].name}+${selectedItemLength-1}
+            `.replace(/\s+/g, '')
+        } else {
+        controlTextChecked = subtitlesCheckedText
+        }
+      } else {
+          controlTextChecked = `OFF`
+      }
+
+      controlText.innerHTML = controlTextChecked
+      localStorage.setItem('subtitles-control-text', controlTextChecked === 'OFF' ? '' : controlTextChecked)
+      localStorage.setItem('subtitles-control-text-checked', subtitlesCheckedText)
+
+      toggleSubtitle({videoPlayer, language: value.toLowerCase()})
     });
-   
     menuItem.appendChild(checkboxItem);
+
+    const controlSubtitlesTextChecked = localStorage.getItem('subtitles-control-text-checked')
+    Array.from(subtitlesMenu.getElementsByClassName('vjs-menu-item')).forEach((menuItem) => {
+      const isChecked = controlSubtitlesTextChecked.includes(menuItem.querySelector('.lng')?.innerHTML.toLowerCase())
+      const checkboxItemElement = menuItem.getElementsByClassName('checkbox-item')[0]
+
+      if (isChecked && checkboxItemElement) {
+        checkedItem(menuItem, checkboxItemElement)
+      }
+    });
+
   });
 }
 
-const nextButtonComponent = ({videoPlayer}) => {
+const nextButtonComponent = ({videoPlayer, callback}) => {
   const nextButton = videoPlayer.controlBar.addChild('button', {
     className: 'vjs-next-button vjs-control vjs-button',
     type: "button",
     title:"Next"
   });
 
+  const svgContainer = document.createElement('div')
+  svgContainer.classList.add('svg-container')
+  svgContainer.innerHTML = nextPlayIcon
+  nextButton.el().appendChild(svgContainer)
   nextButton.el().getElementsByClassName('vjs-control-text')[0].innerHTML = 'Next'
+  nextButton.on('click', () => {
+    if (callback) callback()
+  })
 }
 
 

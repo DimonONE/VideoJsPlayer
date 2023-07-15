@@ -1,5 +1,6 @@
 /* Text translate */
 .vjs-text-track-display {
+  font-size: 1.3em;
   height: 7em;
   top: auto;
   bottom: 6em;
@@ -25,6 +26,7 @@
 
 .video-js .vjs-text-track-display .vjs-text-track-cue > div {
   color: #fc6 !important;
+  background-color: initial !important;
   font-size: 1.4em;
 }
 
@@ -275,7 +277,14 @@
 /*Button next  */
 
 .video-js .vjs-next-button {
+  display: flex;
+  align-items: center;
   margin-left: auto;
+  width: max-content;
+}
+.video-js .vjs-next-button .svg-container {
+  width: 1.2em;
+  margin-left: 1em;
 }
 
 .video-js .vjs-next-button>.vjs-control-text {

@@ -46,7 +46,6 @@ const rewindVideo = async ({videoPlayer}) => {
 
 const soundAdjustment = async ({videoPlayer}) => {
   document.addEventListener('keydown', function(event) {
-    console.log('event.key', event.key);
     if (event.key === 'ArrowUp') {
       event.preventDefault();
       videoPlayer.volume(videoPlayer.volume() + 0.1);
@@ -57,8 +56,67 @@ const soundAdjustment = async ({videoPlayer}) => {
   });
 }
 
+const addSubtitles = async ({videoPlayer, srclang, label}) => {
+  const track = {
+    src: trackUrl,
+    kind: captions,
+    srclang,
+    label
+  };
+
+  videoPlayer.addRemoteTextTrack(track, true);
+}
+
+const resizeSubtitle  = async ({videoPlayer}) => {
+  const subtitleDec = videoPlayer.el().querySelector('.font-size-control .js-dec');
+  const subtitleInc = videoPlayer.el().querySelector('.font-size-control .js-inc');
+
+  subtitleDec.addEventListener('click', () => {
+    const subtitle = document.querySelector('.video-js .vjs-text-track-display .vjs-text-track-cue > div');
+    if (subtitle) {
+      const currentFontSize = subtitle.style.fontSize || '1.3em';
+      const newFontSize = Number(currentFontSize.slice(0, -2)) - 0.1; 
+      subtitle.style.fontSize = `${newFontSize}em`
+    }
+  })
+
+  subtitleInc.addEventListener('click', () => {
+    const subtitle = document.querySelector('.video-js .vjs-text-track-display .vjs-text-track-cue > div');
+    if (subtitle) {
+      const currentFontSize = subtitle.style.fontSize || '1.3em';
+      const newFontSize = Number(currentFontSize.slice(0, -2)) + 0.1; 
+      subtitle.style.fontSize = `${newFontSize}em`
+    }
+  })
+}
+
+const toggleSubtitle  = async ({videoPlayer, language}) => {
+  const textTracks = videoPlayer.textTracks();
+
+  for (let i = 0; i < textTracks.length; i++) {
+    const track = textTracks[i];
+    // console.log('track.kind', track.kind);
+    // console.log('track.label', track.label);
+   
+    if (track.label === language) {
+      console.log('track.mode', track.mode);
+      track.mode = track.mode === 'hidden' || track.mode === 'disabled' ? 'showing' : 'hidden' ;
+    }
+  }
+}
+
+const checkedItem = (menuItem, checkboxItem) => {
+  const isChecked = menuItem.classList.toggle('vjs-selected');
+  menuItem.setAttribute('aria-checked', isChecked ? 'true' : 'false');
+  checkboxItem.innerHTML = isChecked ? `${whiteCheckedIcon}` : '';
+}
+
 module.exports = {
   translateWorld,
   rewindVideo,
-  soundAdjustment
+  soundAdjustment,
+  addSubtitles,
+  toggleSubtitle,
+  resizeSubtitle,
+  checkedItem
 }

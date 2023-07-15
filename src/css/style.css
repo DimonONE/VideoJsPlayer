@@ -82,7 +82,7 @@ body {
 .video-js .vjs-help-button:before,
 .video-js .vjs-subtitles-button .vjs-icon-placeholder:before,
 .video-js .vjs-subtitles-button .vjs-control-text,
-.video-js .vjs-next-button > .vjs-control-text,
+.video-js .vjs-next-button,
 .video-js .vjs-playback-rate:before,
 .video-js .vjs-resolution-button-wrapper .vjs-menu-button.vjs-menu-button-popup.vjs-button:before,
 .video-js .vjs-play-control .vjs-icon-placeholder:before,
@@ -98,6 +98,7 @@ body {
 .video-js .vjs-subtitles-button.active .vjs-icon-placeholder:before,
 .video-js .vjs-subtitles-button.active .vjs-control-text,
 .video-js .vjs-next-button>.vjs-control-text:hover,
+.video-js .vjs-next-button:hover,
 .video-js .vjs-playback-rate:hover:before,
 .video-js .vjs-resolution-button-wrapper .vjs-menu-button.vjs-menu-button-popup.vjs-button:hover:before,
 .video-js .vjs-play-control .vjs-icon-placeholder:hover:before,
@@ -105,6 +106,7 @@ body {
 .video-js .vjs-fullscreen-control .vjs-icon-placeholder:hover:before {
   opacity: 1;
 }
+
 
 .video-js .vjs-big-play-button .vjs-icon-placeholder:before {
   top: 50%;
@@ -164,6 +166,7 @@ body {
 .video-js .vjs-duration {
   display: flex;
   position: absolute;
+  pointer-events: none;
   z-index: 2;
   top: -1.6em;
   height: 1.5em;
