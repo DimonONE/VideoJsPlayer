@@ -1,4 +1,14 @@
-const resizeEventListener = ({divElement}) => {
+function debounce(func, delay) {
+  let timer;
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
+}
+
+function resizeEventListener({divElement}) {
   const rectLeft = divElement.getBoundingClientRect().x; 
   const rectWidth = divElement.getBoundingClientRect().width; 
 
@@ -11,5 +21,6 @@ const resizeEventListener = ({divElement}) => {
 }
 
 module.exports = {
-  resizeEventListener
+  resizeEventListener,
+  debounce
 }

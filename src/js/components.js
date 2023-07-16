@@ -17,8 +17,8 @@ const qualityButtonComponent = ({videoPlayer, qualityButtonWrapper}) => {
   qualityMenuUl.role='menu'
   qualityMenuUl.className ='vjs-menu-content'
   qualityMenu.appendChild(qualityMenuUl);
-
-  for (let i = 0; i < settingsQuality.length; i++) {
+  
+  settingsQuality.forEach((_, i) => {
     const qualityMenuLi = document.createElement('li');
     qualityMenuLi.className ='vjs-menu-item'
     const qualityItemText = document.createElement('span');
@@ -26,7 +26,17 @@ const qualityButtonComponent = ({videoPlayer, qualityButtonWrapper}) => {
     qualityItemText.innerHTML = settingsQuality[i]
     qualityMenuLi.appendChild(qualityItemText);
     qualityMenuUl.appendChild(qualityMenuLi);
-  }
+
+    qualityMenuLi.addEventListener('click', function() {
+        console.log('qualityMenuUl', qualityMenuUl);
+
+      Array.from(qualityMenuUl).forEach((quality) => {
+        console.log('quality', quality);
+        quality.classList?.remove('vjs-selected')
+      })
+      qualityMenuLi.classList.add('vjs-selected')
+    });
+  });
 
   // quality following button
   const qualityButton = document.createElement('button');
@@ -40,6 +50,8 @@ const qualityButtonComponent = ({videoPlayer, qualityButtonWrapper}) => {
     tooltip.classList.add(isTooltipHidden ? 'vjs-lock-showing' : 'vjs-hidden');
     tooltip.classList.remove(isTooltipHidden ?'vjs-hidden' : 'vjs-lock-showing');
   });
+
+
 
   qualityButtonWrapper.appendChild(qualityButton);
 }

@@ -236,6 +236,10 @@ body {
   content: '';
 }
 
+.video-js .vjs-resolution-button-wrapper .vjs-menu-item {
+  position: relative;
+}
+
 .video-js .vjs-resolution-button-wrapper .vjs-menu-button.vjs-menu-button-popup.vjs-button:before {
   content: url('../source/svg/options-settings.svg');
   position: absolute;

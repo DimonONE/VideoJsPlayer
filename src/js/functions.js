@@ -1,8 +1,12 @@
-const { getTranslateWorld } = require("./utils");
+const { getTranslateWorlds } = require("./utils");
 const whiteCheckedIcon = require("../source/svg/white-checked.svg");
 
 const translateWorld = async ({wordContainerElements, word}) => {
-  const { wordTranslate, textVersion } = await getTranslateWorld({word, targetLanguage: 'ru'})  
+  const { wordTranslate, textVersion } = await getTranslateWorlds({
+    word,
+    targetLanguage: 'ru',
+    apiKey: 'AIzaSyBo3oWEmnNgLg4UDrYpG7f5qUmrbYSKY7A'
+  })  
 
   if (wordTranslate) {
     const loadingElement  = wordContainerElements.getElementsByClassName('tooltip_loading')[0]
@@ -102,33 +106,28 @@ const addSubtitles = ({videoPlayer, src, srclang, label}) => {
 }
 
 const toggleSubtitle = async ({videoPlayer, language}) => {
-  await addSubtitles({
-    videoPlayer,
-    src: 'http://localhost:3000/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p-2.vtt',
-    srclang: 'ru',
-    label: 'ru'
-  })
-  await addSubtitles({
+  addSubtitles({
     videoPlayer,
     src: 'http://localhost:3000/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p.vtt',
     srclang: 'en',
-    label: 'en'
+    label: 'English',
+    default: true
   })
 
-  const textTracks = videoPlayer.textTracks();
-  console.log('textTracks', textTracks);
-  for (let i = 0; i < textTracks.length; i++) {
-    const track = textTracks[i];
-    console.log('track.kind', track.kind);
-    console.log('track.label', track.label);
-    console.log('track.srclang', track.srclang);
-    console.log('track.language', track.language);
-   
-    if (track.label === language) {
-      console.log('track.mode', track.mode);
-      track.mode = track.mode === 'hidden' || track.mode === 'disabled' ? 'showing' : 'hidden' ;
-    }
+  addSubtitles({
+    videoPlayer,
+    src: 'http://localhost:3000/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p-2.vtt',
+    srclang: 'ru',
+    label: 'Russian',
+  })
+
+
+   const tracks = videoPlayer.textTracks();
+  for (let i = 0; i < tracks.length; i++) {
+    tracks[i].mode = 'showing';
   }
+  console.log('tracks', tracks);
+
 }
 
 const checkedItem = (menuItem, checkboxItem) => {
