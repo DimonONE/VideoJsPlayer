@@ -1,6 +1,17 @@
 const { getTranslateWorlds } = require("./utils");
 const whiteCheckedIcon = require("../source/svg/white-checked.svg");
 
+const tooltipContainsSynonym = (tooltip, synonym) => {
+  const translationVersions = tooltip.querySelectorAll('.translation_version');
+  for (const version of translationVersions) {
+    const partOfSpeechElement = version.querySelector('.part_of_speech');
+    if (partOfSpeechElement && partOfSpeechElement.textContent === synonym) {
+      return true;
+    }
+  }
+  return false;
+}
+
 const translateWorld = async ({wordContainerElements, word}) => {
   const { wordTranslate, textVersion } = await getTranslateWorlds({
     word,
@@ -19,11 +30,18 @@ const translateWorld = async ({wordContainerElements, word}) => {
 
     const translation = wordContainerElements.querySelector('.tooltip .translation')
     translation.innerHTML = wordTranslate
-    
+
     for (let i = 0; i < textVersion.length; i++) {
-      translationVersion.className = 'translation_version'
-      translationVersion.innerHTML = `<span class="part_of_speech">${textVersion[i].synonym}</span><span class="text_version">${textVersion[i].text}</span>`
-      tooltip.appendChild(translationVersion)
+      const synonym = textVersion[i].synonym;
+      if (tooltipContainsSynonym(tooltip, synonym)) {
+        continue; // Skip adding this synonym to avoid duplicates
+      }
+
+      // If the synonym does not exist, add the translationVersion block
+      const translationVersion = document.createElement('div');
+      translationVersion.className = 'translation_version';
+      translationVersion.innerHTML = `<span class="part_of_speech">${synonym}</span><span class="text_version">${textVersion[i].text}</span>`;
+      tooltip.appendChild(translationVersion);
     }
   }
 
