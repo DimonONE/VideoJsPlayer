@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
+    "start": "webpack --watch --mode production",
     "dev": "nodemon server.js",
     "webpack-watch": "webpack --watch"
   },

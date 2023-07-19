@@ -1,11 +1,14 @@
 const speechSoundIcon = require('../source/svg/icon-speech-sound.svg');
 const addToDictionaryIcon = require('../source/svg/add-to-dictionary.svg');
 const nextPlayIcon = require("../source/svg/icon-next-play.svg");
+const playlistPlayerIcon = require("../source/svg/icon-playlist-player.svg");
+const arrowLeftIcon = require("../source/svg/icon-arrow-left.svg");
+const arrowRightIcon = require("../source/svg/icon-arrow-right.svg");
 const { toggleSubtitle, resizeSubtitle, checkedItem } = require('./functions');
 
 const qualityButtonComponent = ({videoPlayer, qualityButtonWrapper}) => {
-  const controlBar = videoPlayer.controlBar;
   const settingsQuality = [ '720', '420', 'auto']
+  const controlBar = videoPlayer.controlBar;
 
   qualityButtonWrapper.className = 'vjs-resolution-button-wrapper vjs-menu-button vjs-menu-button-popup vjs-control vjs-button';
   controlBar.el().appendChild(qualityButtonWrapper);
@@ -78,6 +81,40 @@ const wordContainer = ({trimmedWord}) => {
 
   return ` <span class="word-container">${content}</span>`
 }
+
+const textTranslate = () => {
+  const textTrackElement = document.getElementsByClassName('vjs-text-track-display');
+  if (textTrackElement.length) {
+    const textTrackCues = textTrackElement[0].getElementsByClassName('vjs-text-track-cue');
+
+    if (textTrackCues.length) {
+      const punctuationRegex = /([.,!?])|\s+/g;
+
+       Array.from(textTrackCues).forEach((track) => {
+        const textTrack = track.getElementsByTagName('div')[0];
+        const text = textTrack.innerHTML;
+        const words = text.split(punctuationRegex).filter((word) => word !== undefined);
+        const isDuplicate = text.includes('class="word"');
+        if (!isDuplicate) {
+          const wordContainers = words.map((word) => {
+            const trimmedWord = word.trim();
+            const hasPunctuation = /[.,!?'"`]/.test(trimmedWord.slice(-1));
+
+            if (hasPunctuation) {
+              return `${trimmedWord} `;
+            } else {
+
+              return wordContainer({trimmedWord});
+            }
+          });
+
+          textTrack.innerHTML = wordContainers.join('');
+        }
+      });
+    }
+  }
+};
+
 
 const subtitlesComponent = ({videoPlayer}) => {
   const selectSubtitlesButton = videoPlayer.controlBar.addChild('button', {
@@ -192,26 +229,25 @@ const subtitlesComponent = ({videoPlayer}) => {
       localStorage.setItem('subtitles-control-text', controlTextChecked === 'OFF' ? '' : controlTextChecked)
       localStorage.setItem('subtitles-control-text-checked', subtitlesCheckedText)
 
-      toggleSubtitle({videoPlayer, language: value.toLowerCase()})
+      toggleSubtitle({videoPlayer, language: value.toLowerCase(), toggle: isChecked})
     });
 
     menuItem.appendChild(checkboxItem);
   });
-
+  
   const controlSubtitlesTextChecked = localStorage.getItem('subtitles-control-text-checked')
   Array.from(subtitlesMenu.getElementsByClassName('vjs-menu-item')).forEach((menuItem) => {
     const value = menuItem.querySelector('.lng')?.innerHTML.toLowerCase()
-    const isChecked = controlSubtitlesTextChecked.includes(value)
+    const isChecked = controlSubtitlesTextChecked?.includes(value)
     const checkboxItemElement = menuItem.getElementsByClassName('checkbox-item')[0]
 
     if (isChecked && checkboxItemElement) {
       checkedItem(menuItem, checkboxItemElement)
-      toggleSubtitle({videoPlayer, language: value})
     }
   });
 }
 
-const nextButtonComponent = ({videoPlayer, callback}) => {
+const nextButtonComponent = (videoPlayer, callback) => {
   const nextButton = videoPlayer.controlBar.addChild('button', {
     className: 'vjs-next-button vjs-control vjs-button',
     type: "button",
@@ -228,10 +264,138 @@ const nextButtonComponent = ({videoPlayer, callback}) => {
   })
 }
 
+const seasonComponent = ({videoPlayer, videojs, seriesData, title, seasonPrev, seasonNext}) => {
+  const season = videojs.dom.createEl('div', {
+    className: 'vjs-title-wrapper vjs-menu-button vjs-menu-button-popup vjs-control vjs-button has-menu',
+  });
+
+  const menuButton = videoPlayer.controlBar.addChild('button', {
+    className: 'vjs-next-button vjs-control vjs-button vjs-title-control vjs-menu-button',
+    type: "button",
+  });
+
+  const controlText = menuButton.el().getElementsByClassName('vjs-control-text')[0]
+  controlText.innerHTML = 'S01E01 Slumber Party Panic'
+
+  const svgContainer = document.createElement('div')
+  svgContainer.className = 'svg-container';
+  svgContainer.innerHTML = playlistPlayerIcon
+
+  menuButton.el().appendChild(controlText)
+  menuButton.el().appendChild(svgContainer)
+  season.appendChild(menuButton.el()); 
+  
+  const seasonMenu = document.createElement('div');
+  seasonMenu.className ='vjs-menu vjs-hidden'
+
+  const menuTitle = document.createElement('div');
+  menuTitle.className ='vjs-menu-title'
+  menuTitle.innerHTML = title || 'Season 1'
+
+  const bottomLine = document.createElement('div');
+  bottomLine.className ='bottom-line'
+  
+  const seasonControl = document.createElement('div');
+  seasonControl.className ='season-control'
+
+  //content
+  const menuContent = document.createElement('div');
+  menuContent.classList.add('vjs-menu-content')
+
+  const changeSeasonPane = document.createElement('div');
+  changeSeasonPane.className ='season-pane js-resize-height js-scrollbar ps-container ps-theme-default'
+
+  seriesData.forEach(({name, href}) => {
+    const series = document.createElement('a');
+    series.setAttribute('href', href)
+    series.innerHTML = name
+    changeSeasonPane.appendChild(series)
+  })
+  menuContent.appendChild(changeSeasonPane)
+
+  // bottom buttons
+  if (seasonPrev?.title && seasonPrev?.onClick) {
+    const changeSeasonPrev = document.createElement('span');
+    changeSeasonPrev.className ='js-change-season prev'
+    changeSeasonPrev.setAttribute('data-target', 'prev')
+    changeSeasonPrev.innerHTML = `${arrowLeftIcon}<span>${seasonPrev.title}</span>`
+    seasonControl.appendChild(changeSeasonPrev)
+
+    changeSeasonPrev.addEventListener('click', () => {
+      seasonPrev.onClick()
+    })
+  }
+
+  if (seasonNext?.title && seasonNext?.onClick) {
+    const changeSeasonNext = document.createElement('span');
+    changeSeasonNext.className ='js-change-season next'
+    changeSeasonNext.setAttribute('data-target', 'next')
+    changeSeasonNext.innerHTML = `<span>${seasonNext.title}</span>${arrowRightIcon}`
+    seasonControl.appendChild(changeSeasonNext)
+
+    changeSeasonNext.addEventListener('click', () => {
+      seasonNext.onClick()
+    })
+  }
+
+  season.appendChild(seasonMenu); 
+  seasonMenu.appendChild(menuTitle)
+  seasonMenu.appendChild(menuContent)
+  bottomLine.appendChild(seasonControl)
+  seasonMenu.appendChild(bottomLine)
+
+  menuButton.on('click', function() {
+    const isTooltipHidden = seasonMenu.classList.contains('vjs-hidden');
+    seasonMenu.classList.toggle('vjs-lock-showing', isTooltipHidden);
+    seasonMenu.classList.toggle('vjs-hidden', !isTooltipHidden);
+    season.classList.toggle('active', isTooltipHidden)
+  });
+
+  videoPlayer.controlBar.el().appendChild(season);
+};
+
+const playerHelper = ({videoPlayer}) => {
+  const playerHelp = document.createElement('div')
+  playerHelp.id = 'player-help'
+
+  playerHelp.innerHTML = `
+    <h4>Player controls</h4>
+    <div class="keyboard">
+      <p>enter — toggle fullscreen</p>
+      <p>space — toggle playback</p>
+      <p>T — translate subtitle cue</p>
+      <p>H — player controls reference</p>
+      <p>А — auto-start next episode</p>
+      <p>P — auto-pause on tab navigation</p>
+      <p>C — show/hide controls</p>
+      <p>S — toggle subtitles</p>
+      <p>1,2...9 — toggle subtitle language</p>
+      <p>SHIFT + F  —  search other subtitle</p>
+      <p>- (minus) — decrease subtitle size</p>
+      <p>= (equal) — increase subtitle size</p>
+      <p>← — back to previous cue or for 5 sec.</p>
+      <p>→ — forward to next cue or for 5 sec.</p>
+      <p>SHIFT + ← or SHIFT + → — subtitle timing</p>
+      <p>SHIFT + &lt; or SHIFT + &gt; — change playback rate</p>
+    </div>
+  `
+  videoPlayer.el().appendChild(playerHelp);
+
+  const helpButton = videoPlayer.controlBar.addChild('button', {
+    className: 'vjs-help-button'
+  });
+
+  helpButton.on('click', () => {
+    playerHelp.classList.toggle('active');
+  })
+}
 
 module.exports = {
   wordContainer,
+  textTranslate,
   qualityButtonComponent,
   nextButtonComponent,
-  subtitlesComponent
+  subtitlesComponent, 
+  seasonComponent,
+  playerHelper
 }

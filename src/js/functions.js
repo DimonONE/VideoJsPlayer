@@ -35,48 +35,24 @@ const translateWorld = async ({wordContainerElements, word}) => {
   })
 }
 
-const rewindVideo = async ({videoPlayer}) => {
-  document.addEventListener('keydown', function(event) {
-    const rewindTime = 1; 
-
-    if (event.code === 'ArrowLeft') {
-      event.preventDefault();
-      videoPlayer.currentTime(videoPlayer.currentTime() - rewindTime);
-    } else if (event.code === 'ArrowRight') {
-      event.preventDefault();
-      videoPlayer.currentTime(videoPlayer.currentTime() + rewindTime);
-    }
-  });
-}
-
-const soundAdjustment = async ({videoPlayer}) => {
-  document.addEventListener('keydown', function(event) {
-    if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      videoPlayer.volume(videoPlayer.volume() + 0.1);
-    } else if (event.key === 'ArrowDown') {
-      event.preventDefault();
-      videoPlayer.volume(videoPlayer.volume() - 0.1);
-    }
-  });
-}
-
 let resizeLocalState = null
 const resizeSubtitle = ({ videoPlayer, defaultSize = 1.3}) => {
   const subtitleSizeStore = localStorage.getItem('subtitle-size')
   resizeLocalState = Number(subtitleSizeStore)
 
   const updateFontSize = (delta, reload) => {
-    const subtitle = document.querySelector('.video-js .vjs-text-track-display .vjs-text-track-cue > div');
-    if (subtitle) {
-      const currentFontSize = parseFloat(subtitle.style.fontSize) || (resizeLocalState || defaultSize);
-      const newFontSize = currentFontSize + delta;
-      subtitle.style.fontSize = `${newFontSize}em`;
-      resizeLocalState = newFontSize
+    const subtitles = document.querySelectorAll('.video-js .vjs-text-track-display .vjs-text-track-cue > div');
+    if (subtitles) {
+      subtitles.forEach(subtitle => {
+        const currentFontSize = parseFloat(subtitle.style.fontSize) || (resizeLocalState || defaultSize);
+        const newFontSize = currentFontSize + delta;
+        subtitle.style.fontSize = `${newFontSize}em`;
+        resizeLocalState = newFontSize
 
-      if (reload) {
-        localStorage.setItem('subtitle-size', +newFontSize)
-      }
+        if (reload) {
+          localStorage.setItem('subtitle-size', +newFontSize)
+        }
+      });
     }
   };
 
@@ -96,39 +72,26 @@ const resizeSubtitle = ({ videoPlayer, defaultSize = 1.3}) => {
   });
 };
 
-const addSubtitles = ({videoPlayer, src, srclang, label}) => {
+
+const addSubtitles = ({ videoPlayer, src, srclang, label, ...props }) => {
   videoPlayer.addRemoteTextTrack({
     kind: 'subtitles',
     src: src,
     srclang,
     label,
+    ...props
   });
-}
+};
 
-const toggleSubtitle = async ({videoPlayer, language}) => {
-  addSubtitles({
-    videoPlayer,
-    src: 'http://localhost:3000/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p.vtt',
-    srclang: 'en',
-    label: 'English',
-    default: true
-  })
+const toggleSubtitle = ({ videoPlayer, language, toggle }) => {
+  const tracks = videoPlayer.textTracks();
 
-  addSubtitles({
-    videoPlayer,
-    src: 'http://localhost:3000/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p-2.vtt',
-    srclang: 'ru',
-    label: 'Russian',
-  })
-
-
-   const tracks = videoPlayer.textTracks();
   for (let i = 0; i < tracks.length; i++) {
-    tracks[i].mode = 'showing';
+    if (tracks[i].language === language) {
+      tracks[i].mode = toggle ? 'showing' : 'hidden';
+    }
   }
-  console.log('tracks', tracks);
-
-}
+};
 
 const checkedItem = (menuItem, checkboxItem) => {
   const isChecked = menuItem.classList.toggle('vjs-selected');
@@ -136,12 +99,64 @@ const checkedItem = (menuItem, checkboxItem) => {
   checkboxItem.innerHTML = isChecked ? `${whiteCheckedIcon}` : '';
 }
 
+
+const rewindVideo = async (event, videoPlayer) => {
+  const rewindTime = 5; 
+  if (event.code === 'ArrowLeft') {
+    event.preventDefault();
+    videoPlayer.currentTime(videoPlayer.currentTime() - rewindTime);
+  } else if (event.code === 'ArrowRight') {
+    event.preventDefault();
+    videoPlayer.currentTime(videoPlayer.currentTime() + rewindTime);
+  }
+}
+
+const soundAdjustment = async (event, videoPlayer) => {
+  if (event.key === 'ArrowUp') {
+    event.preventDefault();
+    videoPlayer.volume(videoPlayer.volume() + 0.1);
+  } else if (event.key === 'ArrowDown') {
+    event.preventDefault();
+    videoPlayer.volume(videoPlayer.volume() - 0.1);
+  }
+}
+
+const toggleFullscreen = async (event, videoPlayer) => {
+  if (event.code === 'Enter') {
+    if (videoPlayer.isFullscreen()) {
+      videoPlayer.exitFullscreen();
+    } else {
+      videoPlayer.requestFullscreen();
+    }
+  } 
+}
+
+const togglePlayback = async (event, videoPlayer) => {
+  console.log('event.code', event.code);
+  if (event.code === 'Space') {
+    if (videoPlayer.paused()) {
+      videoPlayer.play();
+    } else {
+      videoPlayer.pause();
+    }
+  } 
+}
+
+const playerControls = ({videoPlayer}) => {
+   document.addEventListener('keydown', function(event) {
+    rewindVideo(event, videoPlayer)
+    soundAdjustment(event, videoPlayer)
+    toggleFullscreen(event, videoPlayer)
+    togglePlayback(event, videoPlayer)
+  });
+}
+
+
 module.exports = {
   translateWorld,
-  rewindVideo,
-  soundAdjustment,
+  playerControls,
   addSubtitles,
   toggleSubtitle,
   resizeSubtitle,
-  checkedItem
+  checkedItem,
 }

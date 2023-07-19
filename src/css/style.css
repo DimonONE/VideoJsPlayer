@@ -291,7 +291,48 @@ body {
 .video-js .vjs-help-button::before {
   margin-left: auto;
   content: url('../source/svg/square.svg');
+}
 
+#player-help {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 10px);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s, z-index 0s 0.3s;
+  background: white;
+  color: #8F9DA2;
+  padding: 2.5em;
+  border-radius: 4px;
+  font-size: 1em;
+  max-height: calc(100% - 80px);
+  width: 800px;
+  user-select: none;
+}
+
+#player-help.active {
+  opacity: 1;
+  z-index: 100;
+  transition: opacity 0.3s;
+}
+
+#player-help h4 {
+  font-size: 2.24em;
+  margin: 0 0 1em 0;
+  padding-bottom: 10px;
+  color: black;
+  font-weight: normal;
+}
+
+#player-help p {
+  font-size: 1.54em;
+  line-height: 1.4em;
+  margin: 0;
+  float: left;
+  width: 50%;
+  margin-bottom: 10px;
+  padding-right: 20px;
+  cursor: default;
 }
 
 /* Subtitles button */
@@ -308,6 +349,16 @@ body {
   bottom: 0;
   border-radius: 4px 4px 0 0;
   cursor: default;
+}
+
+.video-js .vjs-menu-button-popup .vjs-menu-content::-webkit-scrollbar {
+  width: 6px;
+  min-height: 15px;
+}
+
+.video-js .vjs-menu-button-popup .vjs-menu-content::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+  border-radius: 6px;
 }
 
 .vjs-menu .vjs-menu-content {
@@ -375,13 +426,10 @@ body {
   margin-bottom: 8px;
 }
 
-.video-js .vjs-subtitles-button .vjs-control-text > .vjs-lock-showing {
-background: red;
-}
-
 .vjs-menu.vjs-lock-showing + .vjs-resolution-button,
 .video-js .vjs-subtitles-button.active,
-.video-js .vjs-subtitles-button.active,
+.video-js .vjs-title-wrapper.active,
+.video-js .vjs-title-wrapper.active .vjs-title-control,
 .vjs-menu.vjs-lock-showing + .vjs-menu-button.vjs-menu-button-popup.vjs-button:before,
 .vjs-playback-rate.vjs-menu-button[aria-expanded="true"].vjs-playback-rate:before,
 .vjs-playback-rate.vjs-menu-button[aria-expanded="true"],

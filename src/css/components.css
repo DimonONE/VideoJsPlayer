@@ -1,7 +1,7 @@
 /* Text translate */
 .vjs-text-track-display {
   font-size: 1.3em;
-  height: 7em;
+  height: max-content;
   top: auto;
   bottom: 4em;
   pointer-events: auto;
@@ -9,6 +9,7 @@
 
 .vjs-text-track-display>div {
   margin: 0 !important;
+  position: static !important;
 }
 
 .video-js .vjs-text-track-display .tooltip_content {
@@ -16,18 +17,21 @@
 }
 
 .video-js .vjs-text-track-display .vjs-text-track-cue {
-  top: auto !important;
-  bottom: 0 !important;
+  position: static !important;
   height: max-content !important;
-  padding: 10px 0;
+  padding-top: 10px;
   background-color: rgba(0, 0, 0, 0.5) !important;
   font-size: 2em !important;
+}
+
+.video-js .vjs-text-track-display .vjs-text-track-cue:last-child{
+  padding-bottom: 10px;
 }
 
 .video-js .vjs-text-track-display .vjs-text-track-cue > div {
   color: #fc6 !important;
   background-color: initial !important;
-  font-size: 1.4em;
+  font-size: 1.3em;
 }
 
 .video-js .vjs-text-track-display .vjs-text-track-cue .word-container {
@@ -98,15 +102,7 @@
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 }
 
-/* Language selection */
-
-.video-js .vjs-subtitles-button .vjs-control-text  {
-  padding-left: 2.3em;
-  padding-right: 0.3em;
-  margin: 0;
-}
-
-.video-js .vjs-subtitles-button >.vjs-control-text{
+.video-js .vjs-subtitles-button>.vjs-control-text {
   display: flex;
   align-items: center;
   line-height: 2.6em;
@@ -119,6 +115,146 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Season selection */
+
+.video-js .vjs-title-wrapper.has-menu .vjs-menu {
+  width: 100%;
+  min-width: 42em;
+  left: 0;
+  color: white;
+  text-align: left;
+}
+
+.vjs-title-wrapper .vjs-hidden+.vjs-title-control {
+  background-color: red;
+  color: white;
+}
+
+.vjs-title-wrapper.vjs-menu-button.vjs-menu-button-popup.vjs-control {
+  width: max-content;
+  align-items: center;
+  margin-left: 9em;
+  padding: 0 1em;
+}
+
+.vjs-title-wrapper.vjs-menu-button .vjs-control-text {
+  clip: initial;
+  width: max-content;
+  height: max-content;
+}
+
+.video-js .vjs-title-wrapper .vjs-title-control .svg-container {
+  width: 2.5em;
+}
+
+.video-js .vjs-menu-button-popup .vjs-menu-title {
+  opacity: 0.6;
+  text-align: left;
+  color: white;
+  text-transform: capitalize;
+  font-size: 1.68em;
+  padding: 0.8em 1em;
+  border-bottom: 1px solid #4c4c4c;
+  white-space: nowrap;
+}
+
+.video-js .vjs-title-wrapper.has-menu .vjs-menu .vjs-menu-content .season-pane {
+  max-height: 436.5px;
+  position: relative;
+}
+
+.video-js .vjs-title-wrapper.has-menu .vjs-menu .vjs-menu-content a {
+  display: block;
+  font-size: 1.68em;
+  color: inherit;
+  margin-right: 0.9em;
+  padding: 1em 1em 1em 3em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+  text-decoration: none;
+  -webkit-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.video-js .vjs-title-wrapper.has-menu .vjs-menu .vjs-menu-content a:hover {
+  background-color: #4e4f4f;
+}
+
+.video-js .vjs-title-wrapper.has-menu .vjs-menu .vjs-menu-content a.current {
+  color: #478FCC;
+}
+
+.video-js .vjs-title-wrapper.has-menu .vjs-menu .bottom-line {
+  white-space: nowrap;
+  border-top: 2px solid rgba(102, 107, 109, 0.5);
+  overflow: hidden;
+  background-color: #161515;
+  font-size: 1.68em;
+}
+
+.video-js .vjs-title-wrapper .vjs-menu-content {
+  margin-block: 0.5em;
+  width: calc(100% - 0.3em);
+}
+
+.video-js .vjs-title-wrapper.has-menu .vjs-menu .season-control {
+  display: flex;
+  justify-content: space-between;
+}
+
+.video-js .vjs-title-wrapper.has-menu .vjs-menu .bottom-line .next,
+.video-js .vjs-title-wrapper.has-menu .vjs-menu .bottom-line .prev {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 1em;
+  opacity: 0.3;
+  transition: opacity 0.5s;
+}
+
+.video-js .vjs-title-wrapper.has-menu .vjs-menu .bottom-line .next span,
+.video-js .vjs-title-wrapper.has-menu .vjs-menu .bottom-line .prev span {
+  padding: 0 0.4em;
+}
+
+.video-js .vjs-title-wrapper.has-menu .vjs-menu .bottom-line svg {
+  width: 20px;
+}
+
+.video-js .vjs-title-wrapper.has-menu .vjs-menu .bottom-line .next:hover,
+.video-js .vjs-title-wrapper.has-menu .vjs-menu .bottom-line .next:hover,
+.video-js .vjs-title-wrapper.has-menu .vjs-menu .bottom-line .prev:hover ,
+.video-js .vjs-title-wrapper.has-menu .vjs-menu .bottom-line .prev:hover {
+  opacity: 1;
+}
+
+.ps-container>.ps-scrollbar-y-rail>.ps-scrollbar-y,
+.ps>.ps__scrollbar-y-rail>.ps__scrollbar-y {
+  position: absolute;
+  background-color: #aaa;
+  border-radius: 6px;
+  -webkit-transition: background-color 0.2s linear, height 0.2s linear, width 0.2s ease-in-out, -webkit-border-radius 0.2s ease-in-out;
+  -webkit-transition: background-color 0.2s linear, height 0.2s linear, width 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+  transition: background-color 0.2s linear, height 0.2s linear, width 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+  transition-property: background-color, height, width, border-radius;
+  transition-duration: 0.2s, 0.2s, 0.2s, 0.2s;
+  transition-timing-function: linear, linear, ease-in-out, ease-in-out;
+  transition-delay: 0s, 0s, 0s, 0s;
+  right: 2px;
+  width: 6px;
+  min-height: 15px;
+}
+
+/* Language selection */
+
+.video-js .vjs-subtitles-button .vjs-control-text  {
+  padding-left: 2.3em;
+  padding-right: 0.3em;
+  margin: 0;
 }
 
 .video-js .vjs-subtitles-button {
@@ -275,11 +411,10 @@
 }
 
 /*Button next  */
-
 .video-js .vjs-next-button {
   display: flex;
   align-items: center;
-  margin-left: auto;
+  padding-left: 1em;
   width: max-content;
 }
 .video-js .vjs-next-button .svg-container {

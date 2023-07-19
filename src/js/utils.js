@@ -10,7 +10,6 @@ async function getSynonyms(word) {
   }
 }
 
-
 async function getTranslateWorld({word, targetLanguage, apiKey}) {
   if (!apiKey) throw('Not found translation API key')
 
@@ -27,7 +26,7 @@ async function getTranslateWorld({word, targetLanguage, apiKey}) {
 }
 
 async function getTranslateWorlds({ word, targetLanguage = 'ru', apiKey }) {
-  const textVersion = [];
+  let textVersion = [];
   let wordTranslate = '';
 
   try {
