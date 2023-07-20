@@ -26,7 +26,6 @@ const translateWorld = async ({wordContainerElements, word}) => {
     tooltipContent.style.display = 'block'
 
     const tooltip = wordContainerElements.querySelector('.tooltip')
-    const translationVersion = document.createElement('div')
 
     const translation = wordContainerElements.querySelector('.tooltip .translation')
     translation.innerHTML = wordTranslate
