@@ -1,5 +1,5 @@
 const { getTranslateWorlds } = require("./utils");
-const whiteCheckedIcon = require("../source/svg/white-checked.svg");
+const checkedIcon = require("../source/svg/icon-checked.svg");
 
 const tooltipContainsSynonym = (tooltip, synonym) => {
   const translationVersions = tooltip.querySelectorAll('.translation_version');
@@ -113,7 +113,7 @@ const toggleSubtitle = ({ videoPlayer, language, toggle }) => {
 const checkedItem = (menuItem, checkboxItem) => {
   const isChecked = menuItem.classList.toggle('vjs-selected');
   menuItem.setAttribute('aria-checked', isChecked ? 'true' : 'false');
-  checkboxItem.innerHTML = isChecked ? `${whiteCheckedIcon}` : '';
+  checkboxItem.innerHTML = isChecked ? `${checkedIcon}` : '';
 }
 
 

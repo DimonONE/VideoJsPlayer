@@ -1,5 +1,5 @@
 const speechSoundIcon = require('../source/svg/icon-speech-sound.svg');
-const addToDictionaryIcon = require('../source/svg/add-to-dictionary.svg');
+const addToDictionaryIcon = require('../source/svg/icon-like.svg');
 const nextPlayIcon = require("../source/svg/icon-next-play.svg");
 const playlistPlayerIcon = require("../source/svg/icon-playlist-player.svg");
 const arrowLeftIcon = require("../source/svg/icon-arrow-left.svg");

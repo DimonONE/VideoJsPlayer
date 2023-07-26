@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap');
 @import url("components.css");
 
 body {
@@ -261,6 +262,7 @@ body {
 
 .video-js .vjs-resolution-button-wrapper .vjs-menu-item {
   position: relative;
+  padding: 1em;
 }
 
 .video-js .vjs-resolution-button-wrapper .vjs-menu-button.vjs-menu-button-popup.vjs-button:before {
@@ -369,10 +371,10 @@ body {
 /* Rate button */
 .video-js .vjs-menu-button-popup .vjs-menu-content {
   max-height: none;
-  background-color: #222121;
+  background-color: rgba(17, 17, 17, 0.9);
   position: relative;
   bottom: 0;
-  border-radius: 4px 4px 0 0;
+  border-radius: 8px 8px 0 0;
   cursor: default;
 }
 
@@ -390,14 +392,14 @@ body {
   display: block;
   padding: 0;
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Montserrat', sans-serif;
   overflow: auto;
 }
 
 .video-js .vjs-menu-button-popup .vjs-menu {
   width: auto;
   height: auto;
-  min-width: 100px;
+  min-width: 67px;
   left: 0;
   bottom: 100%;
   margin: 0;
@@ -407,16 +409,12 @@ body {
   opacity: 0;
   visibility: hidden;
   background-color: #222121;
-  border-radius: 4px 4px 0 0;
-}
-
-.video-js .vjs-menu-content .vjs-menu-item.vjs-selected:before {
-  content: url('../source/svg/white-checked.svg');
-  left: 1em;
+  border-radius: 8px 8px 0 0;
 }
 
 .video-js .vjs-menu-content .vjs-menu-item.vjs-selected .vjs-menu-item-text {
-  color: #fff;
+  color: #FE4DCD;
+  font-weight: 700;
 }
 
 .video-js .vjs-playback-rate .vjs-menu-button.vjs-menu-button-popup.vjs-button:before {
@@ -428,8 +426,8 @@ body {
 }
 
 .video-js .vjs-playback-rate .vjs-menu-content .vjs-menu-item {
-  color: #939292;
-  padding: 0.3em 1.5em;
+  color: #FFFFFF;
+  padding: 1em;
   position: relative;
 }
 
@@ -438,7 +436,7 @@ body {
 }
 
 .video-js .vjs-playback-rate .vjs-menu-content .vjs-menu-item:hover {
-  color: #fff;
+  color: #FE4DCD;
   background-color: transparent;
 }
 
@@ -456,8 +454,6 @@ body {
 .video-js .vjs-title-wrapper.active,
 .video-js .vjs-title-wrapper.active .vjs-title-control,
 .vjs-menu.vjs-lock-showing + .vjs-menu-button.vjs-menu-button-popup.vjs-button:before,
-.vjs-playback-rate.vjs-menu-button[aria-expanded="true"].vjs-playback-rate:before,
-.vjs-playback-rate.vjs-menu-button[aria-expanded="true"],
 .video-js:not(.touch-device) .vjs-menu-button-popup:hover {
   background-color: #222121;
   opacity: 1;
