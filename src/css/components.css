@@ -36,6 +36,11 @@
   font-weight: 600;
 }
 
+.video-js .vjs-text-track-display .vjs-text-track-cue.vjs-text-track-cue-en>div {
+  color: #fc6 !important;
+  font-size: 1.3em !important;
+}
+
 .video-js .vjs-text-track-display .vjs-text-track-cue .word-container {
   position: relative;
   z-index: 3;
@@ -63,6 +68,11 @@
 
 .video-js .vjs-text-track-display .word-container.active {
   color: #FE4DCD;
+}
+
+.video-js .vjs-text-track-display .vjs-text-track-cue-en .word-container.active {
+  color: #fc6 !important;
+  background-color: rgba(96, 132, 185, 0.83);
 }
 
 .video-js .vjs-text-track-cue .tooltip .translated_text {

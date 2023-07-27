@@ -156,7 +156,7 @@ const nextButton = (callback) => {
 }
 
 // test
-const tracks =[
+const tracks = [
   {
     src: 'http://localhost:3000/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p.vtt',
     srclang: 'en',
