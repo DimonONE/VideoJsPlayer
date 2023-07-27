@@ -171,7 +171,7 @@ const tracks =[
 ]
 subtitleInitialize(tracks)
 
-const seriesData = [{name: 'Pilot', href: ''}]
+const seriesData = [{name: 'Pilot - Burnt Food', href: ''}, {name: 'Oliver', href: ''}, {name: 'Pipes', href: ''}]
 const seasonPrev = {
   title: 'Season 1',
   onClick: () => false
@@ -181,7 +181,8 @@ const seasonNext = {
   title: 'Season 3',
   onClick: () => false
 }
-seasonInitialize({title: 'Season 2', seriesData, seasonPrev, seasonNext})
+// seasonInitialize({title: 'Season 2', seriesData, seasonPrev, seasonNext})
+seasonInitialize({title: 'Season 2', seriesData})
 nextButton(() => alert('Next'))
 
 module.exports = {

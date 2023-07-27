@@ -159,15 +159,22 @@
 }
 
 .video-js .vjs-menu-button-popup .vjs-menu-title {
-  opacity: 0.6;
+  font-family: 'Montserrat', sans-serif;
   text-align: left;
-  color: white;
+  color: rgb(183 183 183);
   text-transform: capitalize;
   font-size: 1.68em;
-  padding: 0.8em 1em;
-  border-bottom: 1px solid #4c4c4c;
   white-space: nowrap;
+  margin-bottom: 1.5em;
 }
+
+.vjs-title-wrapper.vjs-menu-button.vjs-menu-button-popup.vjs-control .vjs-menu {
+  width: max-content;
+  min-width: 22em;
+  background-color: rgba(17, 17, 17, 0.9) ;
+  padding: 1.6em;
+}
+
 
 .video-js .vjs-title-wrapper.has-menu .vjs-menu .vjs-menu-content .season-pane {
   max-height: 436.5px;
@@ -177,9 +184,7 @@
 .video-js .vjs-title-wrapper.has-menu .vjs-menu .vjs-menu-content a {
   display: block;
   font-size: 1.68em;
-  color: inherit;
-  margin-right: 0.9em;
-  padding: 1em 1em 1em 3em;
+  color: rgba(255, 255, 255, 1);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -187,19 +192,21 @@
   text-decoration: none;
   -webkit-transition: all 0.4s;
   transition: all 0.4s;
+  padding-bottom: 1em;
 }
 
-.video-js .vjs-title-wrapper.has-menu .vjs-menu .vjs-menu-content a:hover {
-  background-color: #4e4f4f;
+.video-js .vjs-title-wrapper.has-menu .vjs-menu .vjs-menu-content a:last-child {
+  padding-bottom: 0
 }
 
 .video-js .vjs-title-wrapper.has-menu .vjs-menu .vjs-menu-content a.current {
-  color: #478FCC;
+  color: rgba(254, 77, 205, 1);
+  font-weight: 700;
 }
 
 .video-js .vjs-title-wrapper.has-menu .vjs-menu .bottom-line {
   white-space: nowrap;
-  border-top: 2px solid rgba(102, 107, 109, 0.5);
+  /* border-top: 2px solid rgba(102, 107, 109, 0.5); */
   overflow: hidden;
   background-color: #161515;
   font-size: 1.68em;
@@ -282,8 +289,8 @@
   display: -ms-flexbox;
   display: flex;
   background-color: #111111;
-  margin: -2.8em -2.8em 1.3em;
-  padding: 1.5em 2.8em;
+  margin: -2.8em -2.8em 0;
+  padding: 2.4em 2.7em;
 }
 
 .video-js .vjs-subtitles-button .vjs-menu .vjs-menu-content {
@@ -292,7 +299,7 @@
 }
 
 .video-js .vjs-subtitles-button.vjs-menu-button-popup .vjs-menu {
-  min-width: 25em;
+  min-width: 23em;
   left: auto;
   right: -3.6em;
 }
@@ -316,10 +323,14 @@
   content: '';
 } 
 
-.vjs-subtitles-button .vjs-menu li.vjs-selected,
-.vjs-subtitles-button .vjs-menu li.vjs-selected:hover,
+.vjs-subtitles-button .vjs-menu li.vjs-selected .checkbox-item,
+.vjs-subtitles-button .vjs-menu li:hover .checkbox-item {
+  border: 1px solid #fff;
+}
+
+.vjs-subtitles-button .vjs-menu li:hover,
 .vjs-subtitles-button .vjs-menu li.vjs-selected:focus {
-  color: #7E7E7E;
+  color: #fff;
 }
 
 .vjs-subtitles-button .vjs-menu li.vjs-menu-item:hover {
@@ -335,8 +346,10 @@
 }
 
 .video-js .vjs-subtitles-button .font-size-control .text {
+  color: rgba(255, 255, 255, 1);
   text-align: left;
-  font-size: 1.4em;
+  font-size: 1.5em;
+  font-weight: 600;
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
@@ -347,23 +360,27 @@
 }
 
 .video-js .vjs-subtitles-button .font-size-control .item:nth-of-type(1) {
-  border-radius: 3px 0 0 3px;
+  border-radius: 8px 0 0 8px;
+}
+
+.video-js .vjs-subtitles-button .font-size-control .item:nth-of-type(2) {
+  border-radius: 0 8px 8px 0;
 }
 
 .video-js .vjs-subtitles-button .font-size-control .item {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 4em;
+  width: 3em;
   height: auto;
   padding: 0.5em;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(153, 153, 153, 1);
   cursor: pointer;
   -webkit-transition: color 0.4s, border-color 0.4s;
   transition: color 0.4s, border-color 0.4s;
   vertical-align: middle;
   position: relative;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 1);
   font-size: 1.2em;
   font-weight: bold;
 }
@@ -382,11 +399,20 @@
   text-transform: capitalize;
   color: white;
   position: relative;
-  width: 4.9em;
+  width: 4em;
   float: left;
   padding: 0 1em 0 2em;
-  margin: 0 1.5em 1.2em 0;
+  margin: 0 0 1.2em 0;
+  margin-bottom: 1.2em;
   text-align: left;
+}
+
+.video-js .vjs-subtitles-button .vjs-menu-item:nth-child(2n) {
+  margin-right: 2.3em;
+}
+
+.video-js .vjs-subtitles-button .vjs-menu-item:nth-last-child(-n+2) {
+  margin-bottom: 0;
 }
 
 .video-js .vjs-subtitles-button .vjs-menu-item sup {

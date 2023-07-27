@@ -183,19 +183,9 @@ const subtitlesComponent = ({videoPlayer}) => {
     menuItem.setAttribute('aria-checked', 'false');
     menuItem.setAttribute('aria-disabled', 'false');
 
-    if (key === '2' || key === '1') {
-      if (key === '1') {
-        const dividerItem = document.createElement('div');
-        dividerItem.className = 'divider';
-        subtitlesMenu.appendChild(dividerItem);
-      }
-
-      menuItem.classList.add('main-lang');
-    }
 
     menuItem.innerHTML += `
       <span class="lng">${value}</span>
-      <sup>${key}</sup>
     `.replace(/\s+/g, ' ');
     subtitlesMenu.appendChild(menuItem);
 

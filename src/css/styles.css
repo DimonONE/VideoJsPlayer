@@ -408,7 +408,6 @@ body {
   display: block;
   opacity: 0;
   visibility: hidden;
-  background-color: #222121;
   border-radius: 8px 8px 0 0;
 }
 
@@ -451,10 +450,10 @@ body {
 
 .vjs-menu.vjs-lock-showing + .vjs-resolution-button,
 .video-js .vjs-subtitles-button.active,
+.video-js .vjs-subtitles-button:hover,
 .video-js .vjs-title-wrapper.active,
 .video-js .vjs-title-wrapper.active .vjs-title-control,
-.vjs-menu.vjs-lock-showing + .vjs-menu-button.vjs-menu-button-popup.vjs-button:before,
-.video-js:not(.touch-device) .vjs-menu-button-popup:hover {
-  background-color: #222121;
+.vjs-menu.vjs-lock-showing + .vjs-menu-button.vjs-menu-button-popup.vjs-button:before  {
+  color: rgba(254, 77, 205, 1);
   opacity: 1;
 }
