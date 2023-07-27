@@ -38,6 +38,10 @@ body {
   border-radius: 0;
 }
 
+.video-js .vjs-button:hover {
+  color: rgba(254, 77, 205, 1);
+}
+
 .video-js .vjs-icon-placeholder:before {
   position: absolute;
   top: 50%;
