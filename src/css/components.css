@@ -31,14 +31,14 @@
 
 .video-js .vjs-text-track-display .vjs-text-track-cue > div {
   background-color: initial !important;
-  font-size: 0.93em !important;
+  font-size: 0.93em;
   font-family: 'Montserrat', sans-serif !important;
   font-weight: 600;
 }
 
 .video-js .vjs-text-track-display .vjs-text-track-cue.vjs-text-track-cue-en>div {
   color: #fc6 !important;
-  font-size: 1.3em !important;
+  font-size: 1.3em;
 }
 
 .video-js .vjs-text-track-display .vjs-text-track-cue .word-container {

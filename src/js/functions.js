@@ -52,25 +52,48 @@ const translateWorld = async ({wordContainerElements, word}) => {
   })
 }
 
+const resize = ({subtitles, delta, reload, defaultSize, resizeLocalState, priority}) => {
+  if (priority) {
+    const subtitleSizeStore = localStorage.getItem('subtitle-size-priority')
+    resizeLocalState = Number(subtitleSizeStore)
+  } else {
+    const subtitleSizeStore = localStorage.getItem('subtitle-size')
+    resizeLocalState = Number(subtitleSizeStore)
+  }
+
+
+  subtitles.forEach(subtitle => {
+    const currentFontSize = parseFloat(subtitle.style.fontSize) || (parseFloat(resizeLocalState) || defaultSize);
+    const newFontSize = (currentFontSize + delta).toFixed(1);
+
+    subtitle.style.fontSize = `${newFontSize}em`;
+    resizeLocalState = newFontSize
+
+    if (reload) {
+      if (priority) {
+        localStorage.setItem('subtitle-size-priority', +newFontSize)
+      } else {
+        localStorage.setItem('subtitle-size', +newFontSize)
+      }
+    }
+  });
+};
+
 let resizeLocalState = null
 const resizeSubtitle = ({ videoPlayer, defaultSize = 1.3}) => {
-  const subtitleSizeStore = localStorage.getItem('subtitle-size')
-  resizeLocalState = Number(subtitleSizeStore)
+
 
   const updateFontSize = (delta, reload) => {
+    const subtitlesPriority = document.querySelectorAll('.video-js .vjs-text-track-display .vjs-text-track-cue.vjs-text-track-cue-en > div');
     const subtitles = document.querySelectorAll('.video-js .vjs-text-track-display .vjs-text-track-cue > div');
-    if (subtitles) {
-      subtitles.forEach(subtitle => {
-        const currentFontSize = parseFloat(subtitle.style.fontSize) || (resizeLocalState || defaultSize);
-        const newFontSize = currentFontSize + delta;
-        subtitle.style.fontSize = `${newFontSize}em`;
-        resizeLocalState = newFontSize
 
-        if (reload) {
-          localStorage.setItem('subtitle-size', +newFontSize)
-        }
-      });
+    if (subtitles) {
+      resize({subtitles, delta, reload, defaultSize, resizeLocalState, priority: false})
     }
+    
+    if (subtitlesPriority) {
+      resize({subtitles: subtitlesPriority, delta, reload, defaultSize, resizeLocalState, priority: true})
+    } 
   };
 
   const subtitleDec = videoPlayer.el().querySelector('.font-size-control .js-dec');
