@@ -80,7 +80,6 @@ videoPlayer.on('timeupdate', function() {
   textTranslate()
 });
 
-
 // Hover effect in word
 let wordIdHash
 videoPlayer.on('timeupdate', function() {
@@ -88,6 +87,7 @@ videoPlayer.on('timeupdate', function() {
   if(wordContainerElements.length) {
     for (let i = 0; i < wordContainerElements.length; i++) {
       wordContainerElements[i].addEventListener('mouseenter', function() {
+        videoPlayer.pause()
         const word = wordContainerElements[i].getElementsByClassName('word')[0].innerHTML
         const isDuplicate = wordIdHash === `${word}-${i}`
         const isAlreadyTranslated = wordContainerElements[i].getElementsByClassName('translation')[0].innerHTML
@@ -107,6 +107,7 @@ videoPlayer.on('timeupdate', function() {
       });
 
       wordContainerElements[i].addEventListener('mouseleave', function() {
+        videoPlayer.play()
         wordContainerElements[i].classList.remove('active')
         wordIdHash = ''
       });
