@@ -161,7 +161,6 @@ const tracks = [
     src: 'http://localhost:3000/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p.vtt',
     srclang: 'en',
     label: 'English',
-    default: true
   },
   {
     src: 'http://localhost:3000/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p-2.vtt',
@@ -171,7 +170,7 @@ const tracks = [
 ]
 subtitleInitialize(tracks)
 
-const seriesData = [{name: 'Pilot - Burnt Food', href: ''}, {name: 'Oliver', href: ''}, {name: 'Pipes', href: ''}]
+const seriesData = [{name: '1. Pilot - Burnt Food', href: ''}, {name: '2. Oliver', href: ''}, {name: '3. Pipes', href: ''}]
 const seasonPrev = {
   title: 'Season 1',
   onClick: () => false
@@ -181,8 +180,7 @@ const seasonNext = {
   title: 'Season 3',
   onClick: () => false
 }
-// seasonInitialize({title: 'Season 2', seriesData, seasonPrev, seasonNext})
-seasonInitialize({title: 'Season 2', seriesData})
+seasonInitialize({title: 'Season 2', seriesData, seasonPrev, seasonNext})
 nextButton(() => alert('Next'))
 
 module.exports = {

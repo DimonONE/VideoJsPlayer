@@ -4,7 +4,7 @@ const nextPlayIcon = require("../source/svg/icon-next-play.svg");
 const playlistPlayerIcon = require("../source/svg/icon-playlist-player.svg");
 const arrowLeftIcon = require("../source/svg/icon-arrow-left.svg");
 const arrowRightIcon = require("../source/svg/icon-arrow-right.svg");
-const { toggleSubtitle, resizeSubtitle, checkedItem } = require('./functions');
+const { toggleSubtitle, resizeSubtitle, checkedItem, textSelectItem } = require('./functions');
 
 const qualityButtonComponent = ({videoPlayer, qualityButtonWrapper}) => {
   const settingsQuality = [ '720', '420', 'auto']
@@ -34,7 +34,6 @@ const qualityButtonComponent = ({videoPlayer, qualityButtonWrapper}) => {
         console.log('qualityMenuUl', qualityMenuUl);
 
       Array.from(qualityMenuUl).forEach((quality) => {
-        console.log('quality', quality);
         quality.classList?.remove('vjs-selected')
       })
       qualityMenuLi.classList.add('vjs-selected')
@@ -178,14 +177,26 @@ const subtitlesComponent = ({videoPlayer}) => {
     checkboxItem.className = 'checkbox-item';
 
     menuItem.classList.add('vjs-menu-item');
+    menuItem.classList.add(`vjs-menu-item-${key}`);
     menuItem.setAttribute('role', 'menuitemradio');
     menuItem.setAttribute('tabindex', '-1');
     menuItem.setAttribute('aria-checked', 'false');
     menuItem.setAttribute('aria-disabled', 'false');
 
 
+    if (key === '2' || key === '1') {
+      if (key === '1') {
+        const dividerItem = document.createElement('div');
+        dividerItem.className = 'divider';
+        subtitlesMenu.appendChild(dividerItem);
+      }
+
+      menuItem.classList.add('main-lang');
+    }
+
     menuItem.innerHTML += `
       <span class="lng">${value}</span>
+       <sup>${key}</sup>
     `.replace(/\s+/g, ' ');
     subtitlesMenu.appendChild(menuItem);
 
@@ -198,27 +209,9 @@ const subtitlesComponent = ({videoPlayer}) => {
       }));
 
       const selectedItemLength = selectedItem.filter(item => item.isChecked).length
-      const subtitlesCheckedText = selectedItem.filter(item => item.isChecked).map(item => item.name).join('+')
       const isChecked = menuItem.classList.contains('vjs-selected');
-      let controlTextChecked = ''
-
-      if (selectedItemLength) {
-        if (selectedItemLength > 2) {
-          controlTextChecked = `${isChecked 
-              ? value 
-              : selectedItem.filter(item => item.isChecked && item.name !== value)[0].name}+${selectedItemLength-1}
-            `.replace(/\s+/g, '')
-        } else {
-        controlTextChecked = subtitlesCheckedText
-        }
-      } else {
-          controlTextChecked = `OFF`
-      }
-
-      controlText.innerHTML = controlTextChecked
-      localStorage.setItem('subtitles-control-text', controlTextChecked === 'OFF' ? '' : controlTextChecked)
-      localStorage.setItem('subtitles-control-text-checked', subtitlesCheckedText)
-
+      
+      textSelectItem({selectedItemLength, isChecked, selectedItem, controlText, value})
       toggleSubtitle({videoPlayer, language: value.toLowerCase(), toggle: isChecked})
     });
 

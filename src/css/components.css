@@ -121,6 +121,26 @@
   margin-top: 0.2em;
 }
 
+.video-js .vjs-title-wrapper.has-menu .vjs-menu .vjs-menu-content .season-pane {
+  max-height: 436.5px;
+  position: relative;
+}
+
+.video-js .vjs-title-wrapper.has-menu .vjs-menu .vjs-menu-content a {
+  display: block;
+  font-size: 1.68em;
+  color: inherit;
+  margin-right: 0.9em;
+  padding: 1em 1em 1em 3em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+  text-decoration: none;
+  -webkit-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
 .video-js .vjs-subtitles-button>.vjs-control-text {
   display: flex;
   align-items: center;
@@ -175,14 +195,22 @@
   text-transform: capitalize;
   font-size: 1.68em;
   white-space: nowrap;
-  margin-bottom: 1.5em;
+  padding: 0.8em 1em;
+  border-bottom: 1px solid #4c4c4c;
+}
+
+.video-js .vjs-title-wrapper.has-menu .vjs-menu .bottom-line {
+  white-space: nowrap;
+  border-top: 2px solid rgba(102, 107, 109, 0.5);
+  overflow: hidden;
+  background-color: #161515;
+  font-size: 1.68em;
 }
 
 .vjs-title-wrapper.vjs-menu-button.vjs-menu-button-popup.vjs-control .vjs-menu {
   width: max-content;
   min-width: 22em;
   background-color: rgba(17, 17, 17, 0.9) ;
-  padding: 1.6em;
 }
 
 
@@ -205,13 +233,14 @@
   padding-bottom: 1em;
 }
 
-.video-js .vjs-title-wrapper.has-menu .vjs-menu .vjs-menu-content a:last-child {
-  padding-bottom: 0
-}
 
 .video-js .vjs-title-wrapper.has-menu .vjs-menu .vjs-menu-content a.current {
   color: rgba(254, 77, 205, 1);
   font-weight: 700;
+}
+
+.video-js .vjs-title-wrapper.has-menu .vjs-menu .vjs-menu-content a:hover {
+  background-color: #4e4f4f;
 }
 
 .video-js .vjs-title-wrapper.has-menu .vjs-menu .bottom-line {
@@ -252,8 +281,6 @@
 }
 
 .video-js .vjs-title-wrapper.has-menu .vjs-menu .bottom-line .next:hover,
-.video-js .vjs-title-wrapper.has-menu .vjs-menu .bottom-line .next:hover,
-.video-js .vjs-title-wrapper.has-menu .vjs-menu .bottom-line .prev:hover ,
 .video-js .vjs-title-wrapper.has-menu .vjs-menu .bottom-line .prev:hover {
   opacity: 1;
 }
@@ -309,12 +336,13 @@
 }
 
 .video-js .vjs-subtitles-button.vjs-menu-button-popup .vjs-menu {
-  min-width: 23em;
+  min-width: 27em;
   left: auto;
   right: -3.6em;
 }
 
 .video-js .vjs-subtitles-button .vjs-menu-item.main-lang {
+  margin-right: 2.3em;
   margin-bottom: 0;
 }
 
@@ -325,7 +353,7 @@
   width: 100%;
   width: calc(100% + 6em);
   height: 1px;
-  background-color: #111111;
+  background-color: #727272;
   margin-bottom: 1em;
 }
 
@@ -409,7 +437,7 @@
   text-transform: capitalize;
   color: white;
   position: relative;
-  width: 4em;
+  width: 5em;
   float: left;
   padding: 0 1em 0 2em;
   margin: 0 0 1.2em 0;

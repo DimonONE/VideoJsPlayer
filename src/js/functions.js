@@ -112,6 +112,28 @@ const resizeSubtitle = ({ videoPlayer, defaultSize = 1.3}) => {
   });
 };
 
+let controlTextChecked = ''
+const textSelectItem = ({selectedItemLength, isChecked, selectedItem, controlText, value}) => {
+  const subtitlesCheckedText = selectedItem.filter(item => item.isChecked).map(item => item.name).join('+')
+
+  if (selectedItemLength) {
+    if (selectedItemLength > 2) {
+      controlTextChecked = `${isChecked 
+          ? value 
+          : selectedItem.filter(item => item.isChecked && item.name !== value)[0].name}+${selectedItemLength-1}
+        `.replace(/\s+/g, '')
+    } else {
+    controlTextChecked = subtitlesCheckedText
+    }
+  } else {
+      controlTextChecked = `OFF`
+  }
+
+  controlText.innerHTML = controlTextChecked
+  localStorage.setItem('subtitles-control-text', controlTextChecked === 'OFF' ? '' : controlTextChecked)
+  localStorage.setItem('subtitles-control-text-checked', subtitlesCheckedText)
+}
+
 
 const addSubtitles = ({ videoPlayer, src, srclang, label, ...props }) => {
   videoPlayer.addRemoteTextTrack({
@@ -135,6 +157,7 @@ const toggleSubtitle = ({ videoPlayer, language, toggle }) => {
 
 const checkedItem = (menuItem, checkboxItem) => {
   const isChecked = menuItem.classList.toggle('vjs-selected');
+
   menuItem.setAttribute('aria-checked', isChecked ? 'true' : 'false');
   checkboxItem.innerHTML = isChecked ? `${checkedIcon}` : '';
 }
@@ -172,7 +195,6 @@ const toggleFullscreen = async (event, videoPlayer) => {
 }
 
 const togglePlayback = async (event, videoPlayer) => {
-  console.log('event.code', event.code);
   if (event.code === 'Space') {
     if (videoPlayer.paused()) {
       videoPlayer.play();
@@ -182,12 +204,40 @@ const togglePlayback = async (event, videoPlayer) => {
   } 
 }
 
+const changeSubtitleBind = async (event, videoPlayer) => {
+  const numItem = event.code.slice(-1);
+  const digit = Array.from({ length: 10 }, (_, i) => `Digit${i}`);
+
+  if (digit.includes(event.code)) {
+    const menuItem = document.getElementsByClassName(`vjs-menu-item-${numItem}`)[0]
+    const value = menuItem.getElementsByClassName('lng')[0].innerHTML
+    const checkboxItem = menuItem.getElementsByClassName(`checkbox-item`)[0]
+    const subtitlesMenu = document.querySelector('.vjs-subtitles-button .vjs-menu-content') 
+    const selectedItem = Array.from(subtitlesMenu.getElementsByClassName('vjs-menu-item')).map((item) => ({
+      name: item.querySelector('.lng').innerHTML?.toLowerCase(),
+      isChecked: value.toLowerCase() === item.querySelector('.lng').innerHTML?.toLowerCase() 
+      ?  item.getAttribute('aria-checked') !== 'true' 
+      : item.getAttribute('aria-checked') === 'true'
+    }));
+    const isChecked = menuItem.classList.contains('vjs-selected');
+    const selectedItemLength = selectedItem.filter(item => item.isChecked).length
+    const selectSubtitlesButton = document.querySelector('.vjs-subtitles-button.vjs-menu-button') 
+    const controlText = selectSubtitlesButton.getElementsByClassName('vjs-control-text')[0]
+
+    checkedItem(menuItem, checkboxItem)
+    toggleSubtitle({videoPlayer, language: value.toLowerCase(), toggle: !isChecked})
+    textSelectItem({selectedItemLength, isChecked: !isChecked, selectedItem, controlText, value})
+  }
+  
+}
+
 const playerControls = ({videoPlayer}) => {
    document.addEventListener('keydown', function(event) {
     rewindVideo(event, videoPlayer)
     soundAdjustment(event, videoPlayer)
     toggleFullscreen(event, videoPlayer)
     togglePlayback(event, videoPlayer)
+    changeSubtitleBind(event, videoPlayer)
   });
 }
 
@@ -199,4 +249,5 @@ module.exports = {
   toggleSubtitle,
   resizeSubtitle,
   checkedItem,
+  textSelectItem
 }
