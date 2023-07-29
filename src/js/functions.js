@@ -52,48 +52,46 @@ const translateWorld = async ({wordContainerElements, word}) => {
   })
 }
 
-const resize = ({subtitles, delta, reload, defaultSize, resizeLocalState, priority}) => {
-  if (priority) {
-    const subtitleSizeStore = localStorage.getItem('subtitle-size-priority')
-    resizeLocalState = Number(subtitleSizeStore)
-  } else {
-    const subtitleSizeStore = localStorage.getItem('subtitle-size')
-    resizeLocalState = Number(subtitleSizeStore)
-  }
-
+const resize = ({subtitles, delta, reload, defaultSize, resizeLocalState, isPriorityItems}) => {
 
   subtitles.forEach(subtitle => {
-    const currentFontSize = parseFloat(subtitle.style.fontSize) || (parseFloat(resizeLocalState) || defaultSize);
+    const priority = subtitle.classList.contains('vjs-text-track-cue-en')
+    const subtitleDiv = subtitle.querySelector('div')
+    const subtitleSizeStore = localStorage.getItem('subtitle-size')
+    resizeLocalState = Number(subtitleSizeStore)
+
+    if (priority || !isPriorityItems.length) {
+      subtitle.classList.add('vjs-text-track-cue-priority')
+    } 
+    
+    if (!priority) {
+      resizeLocalState -= 0.3
+    } 
+
+    const currentFontSize = parseFloat(subtitleDiv.style.fontSize) || (parseFloat(resizeLocalState) || defaultSize);
     const newFontSize = (currentFontSize + delta).toFixed(1);
 
-    subtitle.style.fontSize = `${newFontSize}em`;
+    subtitleDiv.style.fontSize = `${newFontSize}em`;
     resizeLocalState = newFontSize
 
     if (reload) {
-      if (priority) {
-        localStorage.setItem('subtitle-size-priority', +newFontSize)
-      } else {
-        localStorage.setItem('subtitle-size', +newFontSize)
-      }
+      localStorage.setItem('subtitle-size', +newFontSize)
     }
   });
 };
 
 let resizeLocalState = null
 const resizeSubtitle = ({ videoPlayer, defaultSize = 1.3}) => {
-
-
   const updateFontSize = (delta, reload) => {
-    const subtitlesPriority = document.querySelectorAll('.video-js .vjs-text-track-display .vjs-text-track-cue.vjs-text-track-cue-en > div');
-    const subtitles = document.querySelectorAll('.video-js .vjs-text-track-display .vjs-text-track-cue > div');
 
+    const subtitlesMenu = document.querySelector('.vjs-subtitles-button .vjs-menu-content') 
+    const selectedItem = Array.from(subtitlesMenu.getElementsByClassName('vjs-menu-item'));
+    const isPriorityItems = selectedItem.filter(item => item.querySelector('.lng').innerHTML === 'En' && item.getAttribute('aria-checked') === 'true')
+
+    const subtitles = document.querySelectorAll('.video-js .vjs-text-track-display .vjs-text-track-cue');
     if (subtitles) {
-      resize({subtitles, delta, reload, defaultSize, resizeLocalState, priority: false})
+      resize({subtitles, delta, reload, defaultSize, resizeLocalState, isPriorityItems})
     }
-    
-    if (subtitlesPriority) {
-      resize({subtitles: subtitlesPriority, delta, reload, defaultSize, resizeLocalState, priority: true})
-    } 
   };
 
   const subtitleDec = videoPlayer.el().querySelector('.font-size-control .js-dec');

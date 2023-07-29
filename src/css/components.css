@@ -32,11 +32,9 @@
 .video-js .vjs-text-track-display .vjs-text-track-cue > div {
   background-color: initial !important;
   font-size: 0.93em;
-  font-family: 'Montserrat', sans-serif !important;
-  font-weight: 600;
 }
 
-.video-js .vjs-text-track-display .vjs-text-track-cue.vjs-text-track-cue-en>div {
+.video-js .vjs-text-track-display .vjs-text-track-cue.vjs-text-track-cue-priority>div {
   color: #fc6 !important;
   font-size: 1.3em;
 }
@@ -70,7 +68,7 @@
   color: #FE4DCD;
 }
 
-.video-js .vjs-text-track-display .vjs-text-track-cue-en .word-container.active {
+.video-js .vjs-text-track-display .vjs-text-track-cue-priority .word-container.active {
   color: #fc6 !important;
   background-color: rgba(96, 132, 185, 0.83);
 }
