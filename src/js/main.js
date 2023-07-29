@@ -7,7 +7,8 @@ const videoPlayer = videojs('video-player', {
     playbackRates: [0.50, 0.60, 0.70, 0.80, 0.90, 1.00, 1.25, 1.50, 2.00],
     textTrackDisplay: {
       allowMultipleShowingTracks: true
-    }
+    },
+    autoplay: true
 });
 
 const closeButton = document.getElementById('video-close-button');
@@ -159,12 +160,12 @@ const nextButton = (callback) => {
 // test
 const tracks = [
   {
-    src: 'http://localhost:3000/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p.vtt',
+    src: 'https://ecc5-194-39-227-126.ngrok-free.app/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p.vtt',
     srclang: 'en',
     label: 'English',
   },
   {
-    src: 'http://localhost:3000/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p-2.vtt',
+    src: 'https://ecc5-194-39-227-126.ngrok-free.app/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p-2.vtt',
     srclang: 'ru',
     label: 'Russian',
   }

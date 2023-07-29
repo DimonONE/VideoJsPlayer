@@ -112,9 +112,8 @@ body {
 }
 
 
-.video-js .vjs-big-play-button .vjs-icon-placeholder:before {
-  top: 50%;
-  left: 50%;
+.video-js .vjs-big-play-button {
+  display: none;
 }
 
 .video-js .vjs-play-control {
