@@ -83,36 +83,41 @@ videoPlayer.on('timeupdate', function() {
 
 // Hover effect in word
 let wordIdHash
+let leaveTimeout;
 videoPlayer.on('timeupdate', function() {
   const wordContainerElements = document.getElementsByClassName('word-container');
-  if(wordContainerElements.length) {
-    for (let i = 0; i < wordContainerElements.length; i++) {
-      wordContainerElements[i].addEventListener('mouseenter', function() {
-        videoPlayer.pause()
-        const word = wordContainerElements[i].getElementsByClassName('word')[0].innerHTML
-        const isDuplicate = wordIdHash === `${word}-${i}`
-        const isAlreadyTranslated = wordContainerElements[i].getElementsByClassName('translation')[0].innerHTML
-        wordContainerElements[i].classList.add('active')
+  for (let i = 0; i < wordContainerElements.length; i++) {
+    wordContainerElements[i].addEventListener('mouseenter', function() {
+      videoPlayer.pause()
+      const word = wordContainerElements[i].getElementsByClassName('word')[0].innerHTML
+      const isDuplicate = wordIdHash === `${word}-${i}`
+      const isAlreadyTranslated = wordContainerElements[i].getElementsByClassName('translation')[0].innerHTML
+      wordContainerElements[i].classList.add('active')
 
-        if (!isDuplicate ) {
-          if (!isAlreadyTranslated) {
-            translateWorld({wordContainerElements: wordContainerElements[i], word})
-            wordIdHash = `${word}-${i}`
-          }
-          
-          // Fix output tooltip beyond the screen
-          const divElement = wordContainerElements[i].getElementsByClassName('tooltip')[0];
-          resizeEventListener({divElement})
+      if (!isDuplicate ) {
+        if (!isAlreadyTranslated) {
+          translateWorld({wordContainerElements: wordContainerElements[i], word})
+          wordIdHash = `${word}-${i}`
         }
+        
+        // Fix output tooltip beyond the screen
+        const divElement = wordContainerElements[i].getElementsByClassName('tooltip')[0];
+        resizeEventListener({divElement})
+      }
 
-      });
+    });
 
-      wordContainerElements[i].addEventListener('mouseleave', function() {
-        videoPlayer.play()
-        wordContainerElements[i].classList.remove('active')
-        wordIdHash = ''
-      });
-    }
+    wordContainerElements[i].addEventListener('mouseleave', function() {
+      setTimeout(() => {
+        const isCursorOverWord = Array.from(wordContainerElements).filter((item) => item.classList.contains('active')).length;
+        if (!isCursorOverWord) {
+          videoPlayer.play();
+        }
+      }, 300);
+
+      wordContainerElements[i].classList.remove('active')
+      wordIdHash = ''
+    });
   }
 });
 
@@ -160,12 +165,12 @@ const nextButton = (callback) => {
 // test
 const tracks = [
   {
-    src: 'https://ecc5-194-39-227-126.ngrok-free.app/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p.vtt',
+    src: 'https://35f3-194-39-227-126.ngrok-free.app/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p.vtt',
     srclang: 'en',
     label: 'English',
   },
   {
-    src: 'https://ecc5-194-39-227-126.ngrok-free.app/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p-2.vtt',
+    src: 'https://35f3-194-39-227-126.ngrok-free.app/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p-2.vtt',
     srclang: 'ru',
     label: 'Russian',
   }
