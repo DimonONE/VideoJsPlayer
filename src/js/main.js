@@ -8,7 +8,12 @@ const videoPlayer = videojs('video-player', {
     textTrackDisplay: {
       allowMultipleShowingTracks: true
     },
-    autoplay: true
+    autoplay: true,
+    html5: {
+        nativeTextTracks: false,
+        featuresNativeTextTracks: true,
+    },
+    textTrackSettings: false,
 });
 
 const closeButton = document.getElementById('video-close-button');
@@ -83,7 +88,6 @@ videoPlayer.on('timeupdate', function() {
 
 // Hover effect in word
 let wordIdHash
-let leaveTimeout;
 videoPlayer.on('timeupdate', function() {
   const wordContainerElements = document.getElementsByClassName('word-container');
   for (let i = 0; i < wordContainerElements.length; i++) {
@@ -165,12 +169,12 @@ const nextButton = (callback) => {
 // test
 const tracks = [
   {
-    src: 'https://35f3-194-39-227-126.ngrok-free.app/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p.vtt',
+    src: 'https://a53d-194-39-227-126.ngrok-free.app/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p.vtt',
     srclang: 'en',
     label: 'English',
   },
   {
-    src: 'https://35f3-194-39-227-126.ngrok-free.app/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p-2.vtt',
+    src: 'https://a53d-194-39-227-126.ngrok-free.app/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p-2.vtt',
     srclang: 'ru',
     label: 'Russian',
   }
