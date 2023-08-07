@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap');
 @import url("components.css");
+@import url("adaptive.css");
 
 body {
   overflow: hidden;
@@ -123,11 +124,19 @@ body {
 
 /* Play control */
 .video-js .vjs-play-control .vjs-icon-placeholder:before {
-  content: url('../source/svg/icon-play-control.svg');
+  content: "";
+  background: url('../source/svg/icon-play-control.svg') no-repeat center;
+  background-size: contain;
+  width: 1.8em;
+  height: 80%;
 }
 
 .video-js .vjs-play-control.vjs-playing .vjs-icon-placeholder:before {
-  content: url('../source/svg/icon-pause-control.svg');
+  content: "";
+  background: url('../source/svg/icon-pause-control.svg') no-repeat center;
+  background-size: contain;
+  width: 1.8em;
+  height: 80%;
 }
 
 
@@ -141,11 +150,19 @@ body {
 .video-js .vjs-mute-control.vjs-vol-2 .vjs-icon-placeholder:before,
 .video-js .vjs-mute-control.vjs-vol-1 .vjs-icon-placeholder:before,
 .video-js .vjs-mute-control .vjs-icon-placeholder:before {
-  content: url('../source/svg/icon-speaker-control.svg');
+  content: "";
+  background: url('../source/svg/icon-speaker-control.svg') no-repeat center;
+  background-size: contain;
+  width: 2.4em;
+  height: 80%;
 }
 
 .video-js .vjs-mute-control.vjs-vol-0 .vjs-icon-placeholder:before {
-  content: url('../source/svg/icon-speaker-off-control.svg');
+  content: "";
+  background: url('../source/svg/icon-speaker-off-control.svg') no-repeat center;
+  background-size: contain;
+  width: 2.4em;
+  height: 80%;
 }
 
 .vjs-volume-bar.vjs-slider-horizontal {
@@ -182,9 +199,11 @@ body {
 
 .video-js .vjs-fullscreen-control .vjs-icon-placeholder:before,
 .video-js.vjs-fullscreen .vjs-fullscreen-control .vjs-icon-placeholder:before {
-  content: url('../source/svg/icon-fullscreen.svg');
-  width: 1.7em;
-  height: 1.7em;
+  content: "";
+  background: url('../source/svg/icon-fullscreen.svg') no-repeat center;
+  background-size: contain;
+  width: 1.8em;
+  height: 80%;
 }
 
 /* Current Time */
@@ -315,8 +334,11 @@ body {
 /* Help button */
 
 .video-js .vjs-help-button::before {
-  margin-left: auto;
-  content: url('../source/svg/icon-square.svg');
+  content: "";
+  background: url('../source/svg/icon-square.svg') no-repeat center;
+  background-size: contain;
+  width: 3.1em;
+  height: 80%;
 }
 
 #player-help {
@@ -367,8 +389,13 @@ body {
 }
 
 .video-js .vjs-subtitles-button .vjs-icon-placeholder:before {
-  font-size: 2.5em;
-  content: url('../source/svg/icon-subtitles.svg');
+  /* content: url('../source/svg/icon-subtitles.svg'); */
+
+  content: "";
+  background: url('../source/svg/icon-subtitles.svg') no-repeat center;
+  background-size: contain;
+  width: 1.8em;
+  height: 80%;
 }
 
 /* Rate button */

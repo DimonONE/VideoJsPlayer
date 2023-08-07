@@ -3,6 +3,8 @@ const { qualityButtonComponent, nextButtonComponent, subtitlesComponent, seasonC
 const { translateWorld, addSubtitles, toggleSubtitle, playerControls } = require("./functions");
 const { resizeEventListener } = require("./helpers");
 
+const isMobile = window.outerWidth < 480
+
 const videoPlayer = videojs('video-player', {
     playbackRates: [0.50, 0.60, 0.70, 0.80, 0.90, 1.00, 1.25, 1.50, 2.00],
     textTrackDisplay: {
@@ -37,7 +39,7 @@ for (let i = 0; i < menuItemText.length; i++) {
 
 let following = false
 const playbackRateButton = videoPlayer.controlBar.getChild('PlaybackRateMenuButton');
-playbackRateButton.on('click', function() {
+playbackRateButton.on(isMobile ? 'touchstart' : 'click', function() {
   const tooltip = playbackRateButton.el().querySelector('.vjs-menu');
   tooltip.classList.add(!following ? 'vjs-lock-showing' : 'vjs-hidden');
   tooltip.classList.remove(!following ? 'vjs-hidden' : 'vjs-lock-showing');
@@ -84,6 +86,18 @@ qualityButtonComponent({videoPlayer, qualityButtonWrapper})
 // // Custom translate visuals
 videoPlayer.on('timeupdate', function() {
   textTranslate()
+});
+
+// Play on mobile
+videoPlayer.on("touchstart", function(event) {
+  if (event.target === videoPlayer.el().querySelector('video')) {
+    console.log('touchstart');
+    if (videoPlayer.paused()) {
+      videoPlayer.play();
+    } else {
+      videoPlayer.pause();
+    }
+  }
 });
 
 // Hover effect in word
@@ -169,12 +183,12 @@ const nextButton = (callback) => {
 // test
 const tracks = [
   {
-    src: 'https://a53d-194-39-227-126.ngrok-free.app/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p.vtt',
+    src: 'https://a684-194-39-227-126.ngrok-free.app/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p.vtt',
     srclang: 'en',
     label: 'English',
   },
   {
-    src: 'https://a53d-194-39-227-126.ngrok-free.app/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p-2.vtt',
+    src: 'https://a684-194-39-227-126.ngrok-free.app/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p-2.vtt',
     srclang: 'ru',
     label: 'Russian',
   }

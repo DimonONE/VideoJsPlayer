@@ -6,6 +6,9 @@ const arrowLeftIcon = require("../source/svg/icon-arrow-left.svg");
 const arrowRightIcon = require("../source/svg/icon-arrow-right.svg");
 const { toggleSubtitle, resizeSubtitle, checkedItem, textSelectItem } = require('./functions');
 
+const isMobile = window.outerWidth < 480
+
+
 const qualityButtonComponent = ({videoPlayer, qualityButtonWrapper}) => {
   const settingsQuality = [ '720', '420', 'auto']
   const controlBar = videoPlayer.controlBar;
@@ -150,12 +153,17 @@ const subtitlesComponent = ({videoPlayer}) => {
     event.stopPropagation();
   });
 
-  selectSubtitlesButton.on('click', function() {
-    const isTooltipHidden = selectSubtitlesTooltip.classList.contains('vjs-hidden');
-    selectSubtitlesButton.el().classList.toggle('active', isTooltipHidden);
-    selectSubtitlesTooltip.classList.toggle('vjs-lock-showing', isTooltipHidden);
-    selectSubtitlesTooltip.classList.toggle('vjs-hidden', !isTooltipHidden);
+  selectSubtitlesButton.on(isMobile ? 'touchstart' :'click', function(event) {
+    const isToggle = isMobile ? event.target === selectSubtitlesButton.el().querySelector('.vjs-control-text') : true
+
+    if (isToggle) {
+      const isTooltipHidden = selectSubtitlesTooltip.classList.contains('vjs-hidden');
+      selectSubtitlesButton.el().classList.toggle('active', isTooltipHidden);
+      selectSubtitlesTooltip.classList.toggle('vjs-lock-showing', isTooltipHidden);
+      selectSubtitlesTooltip.classList.toggle('vjs-hidden', !isTooltipHidden);
+    }
   });
+
 
   const languages = [
     {'3': 'Es'},
@@ -200,7 +208,7 @@ const subtitlesComponent = ({videoPlayer}) => {
     `.replace(/\s+/g, ' ');
     subtitlesMenu.appendChild(menuItem);
 
-    menuItem.addEventListener('click', () => {
+    menuItem.addEventListener(isMobile ? 'touchstart' : 'click', () => {
       checkedItem(menuItem, checkboxItem)
 
       const selectedItem = Array.from(subtitlesMenu.getElementsByClassName('vjs-menu-item')).map((item) => ({
@@ -242,7 +250,7 @@ const nextButtonComponent = (videoPlayer, callback) => {
   svgContainer.innerHTML = nextPlayIcon
   nextButton.el().appendChild(svgContainer)
   nextButton.el().getElementsByClassName('vjs-control-text')[0].innerHTML = 'Next'
-  nextButton.on('click', () => {
+  nextButton.on(isMobile ? 'touchstart' :'click', () => {
     if (callback) callback()
   })
 }
@@ -327,7 +335,7 @@ const seasonComponent = ({videoPlayer, videojs, seriesData, title, seasonPrev, s
   bottomLine.appendChild(seasonControl)
   seasonMenu.appendChild(bottomLine)
 
-  menuButton.on('click', function() {
+  menuButton.on(isMobile ? 'touchstart' : 'click', function() {
     const isTooltipHidden = seasonMenu.classList.contains('vjs-hidden');
     seasonMenu.classList.toggle('vjs-lock-showing', isTooltipHidden);
     seasonMenu.classList.toggle('vjs-hidden', !isTooltipHidden);
@@ -368,7 +376,7 @@ const playerHelper = ({videoPlayer}) => {
     className: 'vjs-help-button'
   });
 
-  helpButton.on('click', () => {
+  helpButton.on(isMobile ? 'touchstart' : 'click', () => {
     playerHelp.classList.toggle('active');
   })
 }
