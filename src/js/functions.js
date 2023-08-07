@@ -81,7 +81,7 @@ const resize = ({subtitles, delta, reload, defaultSize, resizeLocalState, isPrio
 };
 
 let resizeLocalState = null
-const resizeSubtitle = ({ videoPlayer, defaultSize = 1.3}) => {
+const resizeSubtitle = ({ videoPlayer, isMobile, defaultSize = 1.3}) => {
   const updateFontSize = (delta, reload) => {
 
     const subtitlesMenu = document.querySelector('.vjs-subtitles-button .vjs-menu-content') 
@@ -97,11 +97,11 @@ const resizeSubtitle = ({ videoPlayer, defaultSize = 1.3}) => {
   const subtitleDec = videoPlayer.el().querySelector('.font-size-control .js-dec');
   const subtitleInc = videoPlayer.el().querySelector('.font-size-control .js-inc');
 
-  subtitleDec.addEventListener('click', () => {
+  subtitleDec.addEventListener(isMobile ? 'touchstart' :'click', () => {
     updateFontSize(-0.1, true);
   });
 
-  subtitleInc.addEventListener('click', () => {
+  subtitleInc.addEventListener(isMobile ? 'touchstart' :'click', () => {
     updateFontSize(0.1, true);
   });
 

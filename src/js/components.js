@@ -117,7 +117,6 @@ const textTranslate = () => {
   }
 };
 
-
 const subtitlesComponent = ({videoPlayer}) => {
   const selectSubtitlesButton = videoPlayer.controlBar.addChild('button', {
     className: 'vjs-subtitles-button vjs-menu-button vjs-menu-button-popup vjs-control vjs-button'
@@ -147,7 +146,7 @@ const subtitlesComponent = ({videoPlayer}) => {
   subtitlesMenu.appendChild(fontSizeControl);
   selectSubtitlesButton.el().appendChild(selectSubtitlesTooltip);
   selectSubtitlesTooltip.appendChild(subtitlesMenu);
-  resizeSubtitle({videoPlayer})
+  resizeSubtitle({videoPlayer, isMobile})
 
   selectSubtitlesTooltip.addEventListener('click', function(event) {
     event.stopPropagation();
