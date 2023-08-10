@@ -123,7 +123,9 @@ const subtitlesComponent = ({videoPlayer}) => {
   });
 
   const controlText = selectSubtitlesButton.el().getElementsByClassName('vjs-control-text')[0]
-  const controlSubtitlesText = localStorage.getItem('subtitles-control-text')
+  
+  // Select default language => en
+  const controlSubtitlesText = localStorage.getItem('subtitles-control-text') || 'en'
   controlText.innerHTML = controlSubtitlesText ? controlSubtitlesText : 'OFF'  
 
   const selectSubtitlesTooltip = document.createElement('div');
@@ -132,7 +134,6 @@ const subtitlesComponent = ({videoPlayer}) => {
   const subtitlesMenu = document.createElement('ul');
   subtitlesMenu.role='menu'
   subtitlesMenu.className ='vjs-menu-content'
-  
 
   const fontSizeControl = document.createElement('div');
   fontSizeControl.className = 'font-size-control'
@@ -225,7 +226,8 @@ const subtitlesComponent = ({videoPlayer}) => {
     menuItem.appendChild(checkboxItem);
   });
   
-  const controlSubtitlesTextChecked = localStorage.getItem('subtitles-control-text-checked')
+  // Select default language => en
+  const controlSubtitlesTextChecked = localStorage.getItem('subtitles-control-text-checked') || 'en'
   Array.from(subtitlesMenu.getElementsByClassName('vjs-menu-item')).forEach((menuItem) => {
     const value = menuItem.querySelector('.lng')?.innerHTML.toLowerCase()
     const isChecked = controlSubtitlesTextChecked?.includes(value)

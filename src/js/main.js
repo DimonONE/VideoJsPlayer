@@ -158,7 +158,9 @@ const subtitleInitialize = (tracks) => {
         });
       });
    
-      const controlSubtitlesTextChecked = localStorage.getItem('subtitles-control-text-checked')
+      // Select default language => en
+      const controlSubtitlesTextChecked = localStorage.getItem('subtitles-control-text-checked') || 'en'
+
       controlSubtitlesTextChecked.split('+').forEach(language => {
         toggleSubtitle({videoPlayer, language, toggle: true})
       });
@@ -183,12 +185,12 @@ const nextButton = (callback) => {
 // test
 const tracks = [
   {
-    src: 'https://a684-194-39-227-126.ngrok-free.app/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p.vtt',
+    src: 'https://f4a4-194-39-227-126.ngrok-free.app/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p.vtt',
     srclang: 'en',
     label: 'English',
   },
   {
-    src: 'https://a684-194-39-227-126.ngrok-free.app/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p-2.vtt',
+    src: 'https://f4a4-194-39-227-126.ngrok-free.app/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p-2.vtt',
     srclang: 'ru',
     label: 'Russian',
   }
