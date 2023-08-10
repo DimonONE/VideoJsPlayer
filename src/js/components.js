@@ -349,7 +349,10 @@ const playerHelper = ({videoPlayer}) => {
   playerHelp.id = 'player-help'
 
   playerHelp.innerHTML = `
-    <h4>Player controls</h4>
+    <div class="container-title">
+      <h4>Player controls</h4> 
+      <button class="close"></button>
+    </div>
     <div class="keyboard">
       <p>enter — toggle fullscreen</p>
       <p>space — toggle playback</p>
@@ -376,6 +379,11 @@ const playerHelper = ({videoPlayer}) => {
   });
 
   helpButton.on(isMobile ? 'touchstart' : 'click', () => {
+    playerHelp.classList.toggle('active');
+  })
+
+  const closeButton = playerHelp.querySelector('.container-title .close')
+  closeButton.addEventListener(isMobile ? 'touchstart' : 'click', () => {
     playerHelp.classList.toggle('active');
   })
 }
