@@ -5,7 +5,8 @@
   }
 
   .vjs-title-wrapper.vjs-menu-button.vjs-menu-button-popup.vjs-control {
-    margin-left: 1.6em;
+    margin-left: 0;
+    padding: 0 0 0 1em;
   }
 
   .video-js .vjs-volume-panel:not(.vjs-hidden) .vjs-volume-control {
@@ -14,47 +15,23 @@
 }
 
 @media only screen and (max-device-width: 480px) and (orientation: portrait) {
-  .video-js:not(.vjs-fullscreen) .vjs-control-bar {
-    font-size: 25px;
-  }
-
   .video-js .vjs-progress-control{
     font-size: 1.2em;
   }
-  .video-js .vjs-play-control.vjs-control {
-    margin-left: 1em;
-    font-size: 0.9em;
+
+  .video-js .vjs-play-control.vjs-button {
+    width: 2.5em;
   }
 
-  .video-js .vjs-mute-control .vjs-icon-placeholder:before{
-    margin-left: 1em;
-    font-size: 2.4em;
-  }
-
-  .video-js .vjs-next-button{
+  .video-js .vjs-next-button {
     padding-left: 0;
   }
 
-  #player-help {
-    margin-left: 1.6em;
-  }
-
-  .video-js .vjs-subtitles-button.vjs-menu-button-popup .vjs-menu{
-    right: -8.8em;
-  }
-
-  .video-js .vjs-title-wrapper.has-menu .vjs-menu {
-    left: -4em;
-  }
-
-  .video-js .vjs-title-wrapper.has-menu .vjs-menu .bottom-line svg{
-    width: 50px;
-  }
-  
-
-  .vjs-text-track-display {
-    font-size: 2.2em;
-    bottom: 8em;
+  .video-js .vjs-text-track-display .word-container.active .tooltip {
+    left: auto !important;
+    right: 0 !important;
+    font-size: 0.50em;
+    transform: translate(-50%, -50%);
   }
 
   .video-js .vjs-next-button .vjs-control-text,
