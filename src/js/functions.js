@@ -12,7 +12,7 @@ const tooltipContainsSynonym = (tooltip, synonym) => {
   return false;
 }
 
-const translateWorld = async ({wordContainerElements, word}) => {
+const translateWorld = async ({wordContainerElements, word, isMobile}) => {
   const { wordTranslate, textVersion } = await getTranslateWorlds({
     word,
     targetLanguage: 'ru',
@@ -42,11 +42,18 @@ const translateWorld = async ({wordContainerElements, word}) => {
       translationVersion.innerHTML = `<span class="part_of_speech">${synonym}</span><span class="text_version">${textVersion[i].text}</span>`;
       tooltip.appendChild(translationVersion);
     }
+
+    // Fix position subtitles on Mobile
+    if (isMobile) {
+      const tooltipHeight = tooltip.offsetHeight
+      const wordHeight = wordContainerElements.getElementsByClassName('word')[0].offsetHeight
+      tooltip.style.marginTop = `${-tooltipHeight - wordHeight}px`
+    }
   }
 
   // Play audio in tooltip
   const translationDictionary = wordContainerElements.getElementsByClassName('translation_dictionary')[0];
-  translationDictionary.addEventListener('click', () => {
+  translationDictionary.addEventListener(isMobile ? 'touchstart' : 'click', () => {
     const audioElement = translationDictionary.getElementsByClassName('translation-audio')[0]
     audioElement.play()
   })

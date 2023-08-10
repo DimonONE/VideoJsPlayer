@@ -91,7 +91,6 @@ videoPlayer.on('timeupdate', function() {
 // Play on mobile
 videoPlayer.on("touchstart", function(event) {
   if (event.target === videoPlayer.el().querySelector('video')) {
-    console.log('touchstart');
     if (videoPlayer.paused()) {
       videoPlayer.play();
     } else {
@@ -114,7 +113,7 @@ videoPlayer.on('timeupdate', function() {
 
       if (!isDuplicate ) {
         if (!isAlreadyTranslated) {
-          translateWorld({wordContainerElements: wordContainerElements[i], word})
+          translateWorld({wordContainerElements: wordContainerElements[i], word, isMobile})
           wordIdHash = `${word}-${i}`
         }
         
@@ -134,7 +133,7 @@ videoPlayer.on('timeupdate', function() {
       }, 300);
 
       wordContainerElements[i].classList.remove('active')
-      wordIdHash = ''
+      // wordIdHash = ''
     });
   }
 });

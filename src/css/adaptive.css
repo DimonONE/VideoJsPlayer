@@ -28,10 +28,9 @@
   }
 
   .video-js .vjs-text-track-display .word-container.active .tooltip {
-    left: auto !important;
-    right: 0 !important;
+    position: fixed;
+    bottom: auto;
     font-size: 0.50em;
-    transform: translate(-50%, -50%);
   }
 
   .video-js .vjs-next-button .vjs-control-text,
