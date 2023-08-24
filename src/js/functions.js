@@ -1,5 +1,8 @@
 const { getTranslateWorlds } = require("./utils");
 const checkedIcon = require("../source/svg/icon-checked.svg");
+const { tapHandler } = require("./helpers");
+
+const rewindTime = 5; 
 
 const tooltipContainsSynonym = (tooltip, synonym) => {
   const translationVersions = tooltip.querySelectorAll('.translation_version');
@@ -169,7 +172,6 @@ const checkedItem = (menuItem, checkboxItem) => {
 
 
 const rewindVideo = async (event, videoPlayer) => {
-  const rewindTime = 5; 
   if (event.code === 'ArrowLeft') {
     event.preventDefault();
     videoPlayer.currentTime(videoPlayer.currentTime() - rewindTime);
@@ -189,8 +191,8 @@ const soundAdjustment = async (event, videoPlayer) => {
   }
 }
 
-const toggleFullscreen = async (event, videoPlayer) => {
-  if (event.code === 'Enter') {
+const toggleFullscreen = async (event, videoPlayer, isMobile) => {
+  if (event.code === 'Enter' || isMobile) {
     if (videoPlayer.isFullscreen()) {
       videoPlayer.exitFullscreen();
     } else {
@@ -236,14 +238,83 @@ const changeSubtitleBind = async (event, videoPlayer) => {
   
 }
 
+
+let pageWidth = window.innerWidth || document.body.clientWidth;
+let treshold = Math.max(1,Math.floor(0.01 * (pageWidth)));
+let touchstartX = 0;
+let touchstartY = 0;
+let touchendX = 0;
+let touchendY = 0;
+const swipingMobile = async ( videoPlayer ) => {
+
+  videoPlayer.on("touchstart", function(event) {
+    if (event.target === videoPlayer.el().querySelector('video')) {
+      touchstartX = event.changedTouches[0].screenX;
+      touchstartY = event.changedTouches[0].screenY;
+    }
+  });
+  
+
+  videoPlayer.on("touchend", function(event) {
+    if (event.target === videoPlayer.el().querySelector('video')) {
+      touchendX = event.changedTouches[0].screenX;
+      touchendY = event.changedTouches[0].screenY;
+      handleGesture(event, videoPlayer);
+    }
+  });
+}
+
+function handleGesture(event, videoPlayer) {
+  const limit = Math.tan(45 * 1.5 / 180 * Math.PI);
+  let x = touchendX - touchstartX;
+  let y = touchendY - touchstartY;
+  let xy = Math.abs(x / y);
+  let yx = Math.abs(y / x);
+
+  if (Math.abs(x) > treshold || Math.abs(y) > treshold) {
+    if (yx <= limit) {
+      if (x < 0) {
+        videoPlayer.currentTime(videoPlayer.currentTime() + rewindTime);
+      } else {
+        videoPlayer.currentTime(videoPlayer.currentTime() - rewindTime);
+      }
+    }
+    if (xy <= limit) {
+      if (y < 0) {
+        videoPlayer.controls(true) ;
+      } else {
+        videoPlayer.controls(false) ;
+      }
+    }
+  } else {
+    const isDoubleTap = tapHandler(event)
+    if (isDoubleTap) {
+      toggleFullscreen(event, videoPlayer, true)
+    } else {
+      if (videoPlayer.paused()) {
+        videoPlayer.play();
+      } else {
+        videoPlayer.pause();
+      }
+    }
+  }
+}
+
+
+
 const playerControls = ({videoPlayer}) => {
-   document.addEventListener('keydown', function(event) {
+ 
+  swipingMobile(videoPlayer)
+
+  document.addEventListener('keydown', function(event) {
     rewindVideo(event, videoPlayer)
     soundAdjustment(event, videoPlayer)
     toggleFullscreen(event, videoPlayer)
     togglePlayback(event, videoPlayer)
     changeSubtitleBind(event, videoPlayer)
   });
+
+  
 }
 
 

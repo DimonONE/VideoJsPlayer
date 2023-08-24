@@ -24,6 +24,14 @@ module.exports = (env, argv) => {
             'svg-inline-loader',
           ],
         },
+        {
+          test: /\.(png|jpe?g|gif)$/i,
+          use: [
+            {
+              loader: 'file-loader',
+            },
+          ],
+        },
       ],
     },
   };

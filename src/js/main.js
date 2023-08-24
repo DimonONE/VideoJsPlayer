@@ -88,17 +88,6 @@ videoPlayer.on('timeupdate', function() {
   textTranslate()
 });
 
-// Play on mobile
-videoPlayer.on("touchstart", function(event) {
-  if (event.target === videoPlayer.el().querySelector('video')) {
-    if (videoPlayer.paused()) {
-      videoPlayer.play();
-    } else {
-      videoPlayer.pause();
-    }
-  }
-});
-
 // Hover effect in word
 let wordIdHash
 videoPlayer.on('timeupdate', function() {
@@ -140,7 +129,7 @@ videoPlayer.on('timeupdate', function() {
 
 
 // Helper
-playerHelper({videoPlayer})
+playerHelper({videoPlayer, isMobile})
 
 
 let isFirstLoad = true;
@@ -184,12 +173,12 @@ const nextButton = (callback) => {
 // test
 const tracks = [
   {
-    src: 'https://f4a4-194-39-227-126.ngrok-free.app/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p.vtt',
+    src: 'http://localhost:3000/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p.vtt',
     srclang: 'en',
     label: 'English',
   },
   {
-    src: 'https://f4a4-194-39-227-126.ngrok-free.app/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p-2.vtt',
+    src: 'http://localhost:3000/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p-2.vtt',
     srclang: 'ru',
     label: 'Russian',
   }

@@ -2,6 +2,25 @@
 @import url("components.css");
 @import url("adaptive.css");
 
+.vjs-fade-out {
+  display: block;
+  visibility: hidden;
+  opacity: 0;
+
+  -webkit-transition: visibility 1.5s, opacity 1.5s;
+  -moz-transition: visibility 1.5s, opacity 1.5s;
+  -ms-transition: visibility 1.5s, opacity 1.5s;
+  -o-transition: visibility 1.5s, opacity 1.5s;
+  transition: visibility 1.5s, opacity 1.5s;
+
+  /* Wait a moment before fading out the control bar */
+  -webkit-transition-delay: 2s;
+  -moz-transition-delay: 2s;
+  -ms-transition-delay: 2s;
+  -o-transition-delay: 2s;
+  transition-delay: 2s;
+}
+
 body {
   overflow: hidden;
   margin: 0;
@@ -358,6 +377,34 @@ body {
   max-height: calc(100% - 80px);
   user-select: none;
   overflow: auto;
+}
+
+#player-help .keyboard.mobile {
+  display: flex;
+  justify-content: space-between;
+}
+#player-help .keyboard.mobile .container {
+  display: flex;
+  align-items: center;
+}
+
+#player-help .mobile .container-img {
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+}
+
+#player-help .mobile .container-img img {
+  width: 100%;
+}
+
+#player-help .mobile .container-text__title {
+  opacity: 0.8;
+  margin-bottom: 5px;
+}
+
+#player-help .mobile .container-text__text {
+  font-size: 1.1em;
 }
 
 #player-help.active {

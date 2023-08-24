@@ -20,7 +20,20 @@ function resizeEventListener({divElement}) {
   }
 }
 
+let tapedTwice = false;
+function tapHandler(event) {
+  if(!tapedTwice) {
+      tapedTwice = true;
+      setTimeout( function() { tapedTwice = false; }, 300 );
+      return false;
+  }
+  event.preventDefault();
+  return true
+ }
+
 module.exports = {
+  tapHandler,
   resizeEventListener,
   debounce
 }
+

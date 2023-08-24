@@ -346,34 +346,64 @@ const seasonComponent = ({videoPlayer, videojs, seriesData, title, seasonPrev, s
   videoPlayer.controlBar.el().appendChild(season);
 };
 
-const playerHelper = ({videoPlayer}) => {
+const playerHelper = ({videoPlayer, isMobile}) => {
   const playerHelp = document.createElement('div')
   playerHelp.id = 'player-help'
 
-  playerHelp.innerHTML = `
-    <div class="container-title">
-      <h4>Player controls</h4> 
-      <button class="close"></button>
-    </div>
-    <div class="keyboard">
-      <p>enter — toggle fullscreen</p>
-      <p>space — toggle playback</p>
-      <p>T — translate subtitle cue</p>
-      <p>H — player controls reference</p>
-      <p>А — auto-start next episode</p>
-      <p>P — auto-pause on tab navigation</p>
-      <p>C — show/hide controls</p>
-      <p>S — toggle subtitles</p>
-      <p>1,2...9 — toggle subtitle language</p>
-      <p>SHIFT + F  —  search other subtitle</p>
-      <p>- (minus) — decrease subtitle size</p>
-      <p>= (equal) — increase subtitle size</p>
-      <p>← — back to previous cue or for 5 sec.</p>
-      <p>→ — forward to next cue or for 5 sec.</p>
-      <p>SHIFT + ← or SHIFT + → — subtitle timing</p>
-      <p>SHIFT + &lt; or SHIFT + &gt; — change playback rate</p>
-    </div>
-  `
+  if (isMobile) {
+    playerHelp.innerHTML = `
+      <div class="container-title">
+        <h4>Player controls</h4> 
+        <button class="close"></button>
+      </div>
+      <div class="keyboard mobile">
+        <div class="container">
+          <div class="container-img">
+            <img src="../source/swipe/icons-swipe-right.png" />
+          </div>
+          <div class="container-text">
+            <div class="container-text__title">swipe right</div>
+            <div class="container-text__text">Back to previous cue</div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="container-img">
+            <img src="../source/swipe/icons-swipe-left.png" />
+          </div>
+          <div class="container-text">
+            <div class="container-text__title">swipe left</div>
+            <div class="container-text__text">Forward to next cue</div>
+          </div>
+        </div>
+      </div>
+    `
+  } else {
+    playerHelp.innerHTML = `
+        <div class="container-title">
+          <h4>Player controls</h4> 
+          <button class="close"></button>
+        </div>
+        <div class="keyboard">
+          <p>enter — toggle fullscreen</p>
+          <p>space — toggle playback</p>
+          <p>T — translate subtitle cue</p>
+          <p>H — player controls reference</p>
+          <p>А — auto-start next episode</p>
+          <p>P — auto-pause on tab navigation</p>
+          <p>C — show/hide controls</p>
+          <p>S — toggle subtitles</p>
+          <p>1,2...9 — toggle subtitle language</p>
+          <p>SHIFT + F  —  search other subtitle</p>
+          <p>- (minus) — decrease subtitle size</p>
+          <p>= (equal) — increase subtitle size</p>
+          <p>← — back to previous cue or for 5 sec.</p>
+          <p>→ — forward to next cue or for 5 sec.</p>
+          <p>SHIFT + ← or SHIFT + → — subtitle timing</p>
+          <p>SHIFT + &lt; or SHIFT + &gt; — change playback rate</p>
+        </div>
+      `
+  }
+  
   videoPlayer.el().appendChild(playerHelp);
 
   const helpButton = videoPlayer.controlBar.addChild('button', {
