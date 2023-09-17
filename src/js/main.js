@@ -171,18 +171,30 @@ const nextButton = (callback) => {
 }
 
 // test
+// languages
 const tracks = [
+  // {
+  //   src: 'http://localhost:3000/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p.vtt',
+  //   srclang: 'en',
+  //   label: 'English',
+  // },
   {
-    src: 'http://localhost:3000/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p.vtt',
-    srclang: 'en',
-    label: 'English',
-  },
-  {
-    src: 'http://localhost:3000/Black.Mirror.S01E01.WEB.DL.x264-ITSat_1503952150_720p-2.vtt',
+    src: 'https://1363-217-196-161-229.ngrok-free.app/Russian.vtt',
     srclang: 'ru',
     label: 'Russian',
-  }
+  },
+  // {
+  //   src: 'https://8fd3-217-196-161-229.ngrok-free.app/Italian.vtt',
+  //   srclang: 'it',
+  //   label: 'Italian',
+  // },
+  // {
+  //   src: 'http://localhost:3000/Spanish.vtt',
+  //   srclang: 'es',
+  //   label: 'Spanish',
+  // }
 ]
+
 subtitleInitialize(tracks)
 
 const seriesData = [{name: '1. Pilot - Burnt Food', href: ''}, {name: '2. Oliver', href: ''}, {name: '3. Pipes', href: ''}]

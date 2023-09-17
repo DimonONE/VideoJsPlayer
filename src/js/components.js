@@ -5,6 +5,7 @@ const playlistPlayerIcon = require("../source/svg/icon-playlist-player.svg");
 const arrowLeftIcon = require("../source/svg/icon-arrow-left.svg");
 const arrowRightIcon = require("../source/svg/icon-arrow-right.svg");
 const { toggleSubtitle, resizeSubtitle, checkedItem, textSelectItem } = require('./functions');
+const { languages } = require('./utils');
 
 const isMobile = window.outerWidth < 480
 
@@ -163,20 +164,6 @@ const subtitlesComponent = ({videoPlayer}) => {
       selectSubtitlesTooltip.classList.toggle('vjs-hidden', !isTooltipHidden);
     }
   });
-
-
-  const languages = [
-    {'3': 'Es'},
-    {'4': 'It'},
-    {'5': 'Pt'},
-    {'6': 'Fr'},
-    {'7': 'De'},
-    {'8': 'Pl'},
-    {'9': 'Tr'},
-    {'0': 'Cs'},
-    {'1': 'En'},
-    {'2': 'Ru'},
-  ]
 
   languages.forEach((lng) => {
     const [key, value] = Object.entries(lng)[0];
@@ -373,6 +360,60 @@ const playerHelper = ({videoPlayer, isMobile}) => {
           <div class="container-text">
             <div class="container-text__title">swipe left</div>
             <div class="container-text__text">Forward to next cue</div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="container-img">
+            <img src="../source/swipe/icons-swipe-pinch-in.png" />
+          </div>
+          <div class="container-text">
+            <div class="container-text__title">Pinch in</div>
+            <div class="container-text__text">Decrease subtitle size</div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="container-img">
+            <img src="../source/swipe/icons-swipe-pinch-out.png" />
+          </div>
+          <div class="container-text">
+            <div class="container-text__title">Pinch out</div>
+            <div class="container-text__text">Increase subtitle size</div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="container-img">
+            <img src="../source/swipe/icons-swipe-top.png" />
+          </div>
+          <div class="container-text">
+            <div class="container-text__title">Swipe up</div>
+            <div class="container-text__text">Lock player menu</div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="container-img">
+            <img src="../source/swipe/icons-swipe-bottom.png" />
+          </div>
+          <div class="container-text">
+            <div class="container-text__title">Swipe down</div>
+            <div class="container-text__text">Unlock player menu</div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="container-img">
+            <img src="../source/swipe/icons-swipe-click.png" />
+          </div>
+          <div class="container-text">
+            <div class="container-text__title">Double tap on subtitles area</div>
+            <div class="container-text__text">Translate whole phrase</div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="container-img">
+            <img src="../source/swipe/icons-swipe-click.png" />
+          </div>
+          <div class="container-text">
+            <div class="container-text__title">Double tap on video area</div>
+            <div class="container-text__text">Fullscreen mode</div>
           </div>
         </div>
       </div>

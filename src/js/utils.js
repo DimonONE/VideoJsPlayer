@@ -1,3 +1,17 @@
+
+const languages = [
+  {'3': 'Es'},
+  {'4': 'It'},
+  {'5': 'Pt'},
+  {'6': 'Fr'},
+  {'7': 'De'},
+  {'8': 'Pl'},
+  {'9': 'Tr'},
+  {'0': 'Cs'},
+  {'1': 'En'},
+  {'2': 'Ru'},
+]
+
 async function getSynonyms(word) {
   try {
     const response = await fetch(`https://api.datamuse.com/words?rel_syn=${encodeURIComponent(word)}`)
@@ -52,5 +66,6 @@ async function getTranslateWorlds({ word, targetLanguage = 'ru', apiKey }) {
 };
 
 module.exports = {
-  getTranslateWorlds
+  getTranslateWorlds,
+  languages
 }

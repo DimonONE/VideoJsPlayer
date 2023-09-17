@@ -1,0 +1,3 @@
+const TRANSLATE_API_KEY = 'AIzaSyBo3oWEmnNgLg4UDrYpG7f5qUmrbYSKY7A'
+
+module.exports = {TRANSLATE_API_KEY}

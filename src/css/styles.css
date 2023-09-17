@@ -380,12 +380,12 @@ body {
 }
 
 #player-help .keyboard.mobile {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 #player-help .keyboard.mobile .container {
   display: flex;
-  align-items: center;
+  margin-top: 10px;
 }
 
 #player-help .mobile .container-img {

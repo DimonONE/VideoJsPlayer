@@ -1,6 +1,8 @@
 const { getTranslateWorlds } = require("./utils");
 const checkedIcon = require("../source/svg/icon-checked.svg");
 const { tapHandler } = require("./helpers");
+const { TRANSLATE_API_KEY } = require("../../config");
+const Hammer = require("hammerjs");
 
 const rewindTime = 5; 
 
@@ -19,7 +21,7 @@ const translateWorld = async ({wordContainerElements, word, isMobile}) => {
   const { wordTranslate, textVersion } = await getTranslateWorlds({
     word,
     targetLanguage: 'ru',
-    apiKey: 'AIzaSyBo3oWEmnNgLg4UDrYpG7f5qUmrbYSKY7A'
+    apiKey: TRANSLATE_API_KEY
   })  
 
   if (wordTranslate) {
@@ -73,50 +75,87 @@ const resize = ({subtitles, delta, reload, defaultSize, resizeLocalState, isPrio
     if (priority || !isPriorityItems.length) {
       subtitle.classList.add('vjs-text-track-cue-priority')
     } 
-    
-    if (!priority) {
+    if (!priority && resizeLocalState >= 0.3) {
       resizeLocalState -= 0.3
     } 
 
     const currentFontSize = parseFloat(subtitleDiv.style.fontSize) || (parseFloat(resizeLocalState) || defaultSize);
-    const newFontSize = (currentFontSize + delta).toFixed(1);
+    const newFontSize = currentFontSize > 50 ? 0.3 : (currentFontSize + delta).toFixed(1) ;
 
-    subtitleDiv.style.fontSize = `${newFontSize}em`;
-    resizeLocalState = newFontSize
+    if(newFontSize > 0) {
+      subtitleDiv.style.fontSize = `${newFontSize}em`;
+      resizeLocalState = newFontSize
 
-    if (reload) {
-      localStorage.setItem('subtitle-size', +newFontSize)
+      if (reload) {
+        localStorage.setItem('subtitle-size', +newFontSize)
+      }
     }
   });
 };
 
+
 let resizeLocalState = null
-const resizeSubtitle = ({ videoPlayer, isMobile, defaultSize = 1.3}) => {
-  const updateFontSize = (delta, reload) => {
+const updateSubtitlesSize = (delta, reload, defaultSize) => {
+  const subtitlesMenu = document.querySelector('.vjs-subtitles-button .vjs-menu-content') 
+  const selectedItem = Array.from(subtitlesMenu.getElementsByClassName('vjs-menu-item'));
+  const isPriorityItems = selectedItem.filter(item => item.querySelector('.lng').innerHTML === 'En' && item.getAttribute('aria-checked') === 'true')
 
-    const subtitlesMenu = document.querySelector('.vjs-subtitles-button .vjs-menu-content') 
-    const selectedItem = Array.from(subtitlesMenu.getElementsByClassName('vjs-menu-item'));
-    const isPriorityItems = selectedItem.filter(item => item.querySelector('.lng').innerHTML === 'En' && item.getAttribute('aria-checked') === 'true')
+  const subtitles = document.querySelectorAll('.video-js .vjs-text-track-display .vjs-text-track-cue');
+  if (subtitles) {
+    resize({subtitles, delta, reload, defaultSize, resizeLocalState, isPriorityItems})
+  }
+};
 
-    const subtitles = document.querySelectorAll('.video-js .vjs-text-track-display .vjs-text-track-cue');
-    if (subtitles) {
-      resize({subtitles, delta, reload, defaultSize, resizeLocalState, isPriorityItems})
+
+function updateSubtitlesSizeSmooth(scale) {
+  const subtitles = document.querySelectorAll('.vjs-text-track-display .vjs-text-track-cue');
+  const duration = 300; 
+  
+  subtitles.forEach(subtitle => {
+    const subtitleDiv = subtitle.querySelector('div');
+    const currentFontSize = parseFloat(subtitleDiv.style.fontSize) || 1.0;
+
+    const targetFontSize = currentFontSize > 30 ? 30 : (currentFontSize * scale).toFixed(1);
+    
+    const startTime = performance.now();
+    
+    function animate() {
+      const currentTime = performance.now();
+      const elapsedTime = currentTime - startTime;
+      
+      if (elapsedTime < duration) {
+        const interpolation = elapsedTime / duration;
+        const newFontSize = (currentFontSize + interpolation * (targetFontSize - currentFontSize)).toFixed(1);
+        
+        subtitleDiv.style.fontSize = `${newFontSize}em`;
+        localStorage.setItem('subtitle-size', +newFontSize)
+        
+        requestAnimationFrame(animate);
+      } else {
+        subtitleDiv.style.fontSize = `${targetFontSize}em`;
+      }
     }
-  };
+    
+    animate();
+  });
+}
 
+
+const resizeSubtitle = ({ videoPlayer, isMobile, defaultSize = 1.3}) => {
+ 
   const subtitleDec = videoPlayer.el().querySelector('.font-size-control .js-dec');
   const subtitleInc = videoPlayer.el().querySelector('.font-size-control .js-inc');
 
-  subtitleDec.addEventListener(isMobile ? 'touchstart' :'click', () => {
-    updateFontSize(-0.1, true);
+  subtitleDec.addEventListener(isMobile ? 'touchstart' : 'click', () => {
+    updateSubtitlesSize(-0.1, true, defaultSize);
   });
 
-  subtitleInc.addEventListener(isMobile ? 'touchstart' :'click', () => {
-    updateFontSize(0.1, true);
+  subtitleInc.addEventListener(isMobile ? 'touchstart' : 'click', () => {
+    updateSubtitlesSize(0.1, true, defaultSize);
   });
 
   videoPlayer.on('texttrackchange', () => {
-    updateFontSize(0); 
+    updateSubtitlesSize(0, false, defaultSize); 
   });
 };
 
@@ -182,11 +221,11 @@ const rewindVideo = async (event, videoPlayer) => {
 }
 
 const soundAdjustment = async (event, videoPlayer) => {
+  event.preventDefault();
+
   if (event.key === 'ArrowUp') {
-    event.preventDefault();
     videoPlayer.volume(videoPlayer.volume() + 0.1);
   } else if (event.key === 'ArrowDown') {
-    event.preventDefault();
     videoPlayer.volume(videoPlayer.volume() - 0.1);
   }
 }
@@ -239,57 +278,37 @@ const changeSubtitleBind = async (event, videoPlayer) => {
 }
 
 
-let pageWidth = window.innerWidth || document.body.clientWidth;
-let treshold = Math.max(1,Math.floor(0.01 * (pageWidth)));
-let touchstartX = 0;
-let touchstartY = 0;
-let touchendX = 0;
-let touchendY = 0;
-const swipingMobile = async ( videoPlayer ) => {
-
-  videoPlayer.on("touchstart", function(event) {
-    if (event.target === videoPlayer.el().querySelector('video')) {
-      touchstartX = event.changedTouches[0].screenX;
-      touchstartY = event.changedTouches[0].screenY;
-    }
-  });
-  
-
-  videoPlayer.on("touchend", function(event) {
-    if (event.target === videoPlayer.el().querySelector('video')) {
-      touchendX = event.changedTouches[0].screenX;
-      touchendY = event.changedTouches[0].screenY;
-      handleGesture(event, videoPlayer);
-    }
-  });
+const resizeSubtitleControl = (event, videoPlayer) => {
+  if (event.code === 'Equal') {
+    updateSubtitlesSize(0.1, true, 1.3);
+  } else if (event.code === 'Minus') {
+    updateSubtitlesSize(-0.1, true, 1.3);
+  } 
 }
 
-function handleGesture(event, videoPlayer) {
-  const limit = Math.tan(45 * 1.5 / 180 * Math.PI);
-  let x = touchendX - touchstartX;
-  let y = touchendY - touchstartY;
-  let xy = Math.abs(x / y);
-  let yx = Math.abs(y / x);
+// Mobile swipes
+const swipingMobile = async (videoPlayer) => {
+  const hammer = new Hammer(videoPlayer.el());
+  hammer.get('pinch').set({ enable: true });
 
-  if (Math.abs(x) > treshold || Math.abs(y) > treshold) {
-    if (yx <= limit) {
-      if (x < 0) {
-        videoPlayer.currentTime(videoPlayer.currentTime() + rewindTime);
-      } else {
-        videoPlayer.currentTime(videoPlayer.currentTime() - rewindTime);
-      }
+  let currentScale = 1;
+
+  hammer.on('pinch', (e) => {
+    currentScale *= e.scale;
+
+    if (currentScale < 0.5) {
+      currentScale = 0.5;
     }
-    if (xy <= limit) {
-      if (y < 0) {
-        videoPlayer.controls(true) ;
-      } else {
-        videoPlayer.controls(false) ;
-      }
+    if (currentScale > 2.0) {
+      currentScale = 2.0;
     }
-  } else {
-    const isDoubleTap = tapHandler(event)
-    if (isDoubleTap) {
-      toggleFullscreen(event, videoPlayer, true)
+
+    updateSubtitlesSizeSmooth(currentScale);
+  });
+
+  hammer.on('tap doubletap', (e) => {
+    if (e.type === 'doubletap') {
+      toggleFullscreen(e, videoPlayer, true);
     } else {
       if (videoPlayer.paused()) {
         videoPlayer.play();
@@ -297,24 +316,65 @@ function handleGesture(event, videoPlayer) {
         videoPlayer.pause();
       }
     }
-  }
-}
+  });
 
+  
+  let panDirection = null; 
 
+  hammer.on('panstart', (e) => {
+    const angle = Math.abs(e.angle);
+
+    if (angle < 30) {
+      panDirection = 'horizontal'; 
+    } else if (angle > 60) {
+      panDirection = 'vertical'; 
+    }
+  });
+
+  hammer.on('panmove', (e) => {
+   if (panDirection === 'vertical') {
+      if (e.deltaY < -50) {
+        videoPlayer.controls(true);
+      } else if (e.deltaY > 50) {
+        videoPlayer.controls(false);
+      }
+    }
+  });
+
+  
+  hammer.on('swipe', (e) => {
+    const limit = Math.tan(45 * 1.5 / 180 * Math.PI);
+    let x = e.deltaX;
+    let y = e.deltaY;
+    let yx = Math.abs(y / x);
+
+    if (yx <= limit) {
+      if (x < 0) {
+        videoPlayer.currentTime(videoPlayer.currentTime() + rewindTime);
+      } else {
+        videoPlayer.currentTime(videoPlayer.currentTime() - rewindTime);
+      }
+    }
+  });
+
+  hammer.on('panend', (e) => {
+    panDirection = null; 
+  });
+};
 
 const playerControls = ({videoPlayer}) => {
- 
+  //  Mobile events
   swipingMobile(videoPlayer)
 
+  //  Desktop events
   document.addEventListener('keydown', function(event) {
     rewindVideo(event, videoPlayer)
     soundAdjustment(event, videoPlayer)
     toggleFullscreen(event, videoPlayer)
     togglePlayback(event, videoPlayer)
     changeSubtitleBind(event, videoPlayer)
+    resizeSubtitleControl(event, videoPlayer)
   });
-
-  
 }
 
 
