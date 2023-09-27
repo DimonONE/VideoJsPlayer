@@ -28,7 +28,7 @@ videoPlayer.on("useractive", function() {
 });
 
 // Video controls
-playerControls({videoPlayer})
+playerControls({videoPlayer, isMobile})
 
 // Rounding of speed values to 2 decimal places
 const menuItemText = document.querySelectorAll('.vjs-playback-rate .vjs-menu-item-text')
@@ -179,20 +179,20 @@ const tracks = [
   //   label: 'English',
   // },
   {
-    src: 'https://1363-217-196-161-229.ngrok-free.app/Russian.vtt',
+    src: 'https://4442-217-196-161-77.ngrok-free.app/Russian.vtt',
     srclang: 'ru',
     label: 'Russian',
   },
-  // {
-  //   src: 'https://8fd3-217-196-161-229.ngrok-free.app/Italian.vtt',
-  //   srclang: 'it',
-  //   label: 'Italian',
-  // },
-  // {
-  //   src: 'http://localhost:3000/Spanish.vtt',
-  //   srclang: 'es',
-  //   label: 'Spanish',
-  // }
+  {
+    src: 'https://4442-217-196-161-77.ngrok-free.app/Italian.vtt',
+    srclang: 'it',
+    label: 'Italian',
+  },
+  {
+    src: 'https://4442-217-196-161-77.ngrok-free.app/Spanish.vtt',
+    srclang: 'es',
+    label: 'Spanish',
+  }
 ]
 
 subtitleInitialize(tracks)

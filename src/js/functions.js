@@ -362,10 +362,12 @@ const swipingMobile = async (videoPlayer) => {
   });
 };
 
-const playerControls = ({videoPlayer}) => {
-  //  Mobile events
+const playerControls = ({videoPlayer, isMobile }) => {
+  isMobile
+  if (isMobile) {
+    //  Mobile events
   swipingMobile(videoPlayer)
-
+  } else {
   //  Desktop events
   document.addEventListener('keydown', function(event) {
     rewindVideo(event, videoPlayer)
@@ -375,6 +377,9 @@ const playerControls = ({videoPlayer}) => {
     changeSubtitleBind(event, videoPlayer)
     resizeSubtitleControl(event, videoPlayer)
   });
+  }
+  
+
 }
 
 
